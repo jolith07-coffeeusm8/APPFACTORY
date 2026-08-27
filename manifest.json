@@ -1,0 +1,20 @@
+{
+  "short_name": "Aces Tracker",
+  "name": "BattleTech Aces Campaign Tracker",
+  "icons": [
+    {
+      "src": "ACES_ICON.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "ACES_ICON.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#101216",
+  "theme_color": "#d97706",
+  "display": "standalone"
+}
