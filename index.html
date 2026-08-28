@@ -20,32 +20,44 @@
   <link rel="icon" type="image/png" sizes="192x192" href="ACES_ICON.png">
   <link rel="shortcut icon" href="ACES_ICON.png">
 
+  <!-- Google Fonts: Russo One for headers, Inter for readability -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Russo+One&display=swap" rel="stylesheet">
+
 <style>
   :root {
-    /* Grays & Terminal Greens Palette */
-    --bg-main: #121212;
-    --bg-card: #202020;
-    --bg-card-sub: #2c2c2c;
-    --accent: #22c55e;
-    --accent-hover: #16a34a;
-    --text-main: #4ade80; 
-    --text-dim: #9ca3af;
-    --border: #404040;
-    --danger: #ef4444;
-    --danger-hover: #dc2626;
-    --success: #22c55e;
-    --edge-color: #38bdf8;
+    /* High-Contrast Tactical Palette */
+    --bg-deep: #000000;
+    --bg-card: #151515;
+    --bg-panel: #262626;
+    --text-main: #ffffff; 
+    --text-muted: #a3a3a3;
+    --border-dark: #333333;
+    --border-light: #525252;
+    
+    /* Accents */
+    --red-base: #dc2626;
+    --red-hover: #ef4444;
+    --red-dark: #7f1d1d;
+    --red-light: #f87171;
+    --white-accent: #f5f5f5;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
   
   body { 
-    background: var(--bg-main); 
+    background: var(--bg-deep); 
+    background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
     color: var(--text-main); 
-    font-family: 'Courier New', Courier, monospace; 
     padding: 20px; 
     line-height: 1.5; 
     font-size: 1.05rem; 
+  }
+  
+  h1, h2, h3, .tab-btn, .btn, .sp-counter, th {
+    font-family: 'Russo One', sans-serif;
+    letter-spacing: 0.5px;
   }
   
   .container { max-width: 1300px; margin: 0 auto; }
@@ -55,7 +67,7 @@
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    border-bottom: 2px solid var(--accent); 
+    border-bottom: 3px solid var(--red-base); 
     padding-bottom: 16px; 
     margin-bottom: 24px; 
     flex-wrap: wrap; 
@@ -63,89 +75,194 @@
   }
   .header-brand { display: flex; align-items: center; gap: 16px; }
   
+  /* Tactical Pilot SVG Icon Container */
   .aces-logo-btn {
-    width: 68px;
-    height: 68px;
-    border-radius: 10px;
-    border: 2px solid var(--accent);
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
     background: var(--bg-card);
+    border: 2px solid var(--border-light);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.8);
     display: block;
   }
 
-  h1 { font-size: 1.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 4px; font-weight: bold; }
+  h1 { font-size: 1.8rem; text-transform: uppercase; color: var(--white-accent); margin-bottom: 2px; }
   
   .header-actions { display: flex; align-items: center; gap: 14px; }
-  .sp-counter { font-size: 1.3rem; font-weight: bold; background: var(--bg-card); padding: 10px 20px; border-radius: 4px; border: 1px solid var(--accent); color: var(--text-main); }
-  .sp-counter span { color: #fff; }
+  
+  .sp-counter { 
+    font-size: 1.4rem; 
+    background: var(--bg-card); 
+    padding: 10px 20px; 
+    border-radius: 6px; 
+    border: 2px solid var(--border-light); 
+    color: var(--text-main); 
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+  }
+  .sp-counter span { color: var(--red-hover); }
 
-  /* Navigation */
+  /* Navigation Tabs */
   .tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
-  .tab-btn { background: var(--bg-card); color: var(--text-dim); border: 1px solid var(--border); padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1.05rem; transition: 0.2s; font-family: inherit;}
-  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  .tab-btn { 
+    background: var(--bg-panel); 
+    color: var(--text-muted); 
+    border: 2px solid var(--border-dark); 
+    padding: 12px 24px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 1.1rem; 
+    transition: 0.2s;
+    text-transform: uppercase;
+  }
+  .tab-btn:hover { border-color: var(--text-muted); color: var(--white-accent); }
+  .tab-btn.active { 
+    background: var(--red-base); 
+    color: #fff; 
+    border-color: var(--red-light); 
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+  }
 
   .panel { display: none; }
-  .panel.active { display: block; }
+  .panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
   /* Grids & Cards */
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; margin-bottom: 20px; }
-  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
-  .card h2 { font-size: 1.25rem; margin-bottom: 16px; border-bottom: 1px solid var(--accent); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; color: var(--accent); }
+  .card { 
+    background: var(--bg-card); 
+    border: 2px solid var(--border-dark); 
+    border-radius: 8px; 
+    padding: 24px; 
+    box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+  }
+  .card h2 { 
+    font-size: 1.4rem; 
+    margin-bottom: 18px; 
+    border-bottom: 2px solid var(--border-light); 
+    padding-bottom: 8px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    color: var(--white-accent); 
+  }
 
-  .pilot-training-card { background: var(--bg-card-sub); border: 1px solid var(--border); border-radius: 4px; padding: 16px; margin-bottom: 16px; }
+  .pilot-training-card { 
+    background: var(--bg-panel); 
+    border: 1px solid var(--border-light); 
+    border-radius: 6px; 
+    padding: 16px; 
+    margin-bottom: 16px; 
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+  }
   .pilot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: bold; font-size: 1.15rem; color: #fff; }
 
   /* Forms */
-  .form-group { margin-bottom: 14px; }
-  label { display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; font-weight: bold; }
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; font-weight: bold; }
   input, select, textarea { 
     width: 100%; 
-    background: var(--bg-main); 
-    border: 1px solid var(--border); 
-    color: var(--text-main); 
-    padding: 10px 12px; 
+    background: #000; 
+    border: 2px solid var(--border-light); 
+    color: var(--white-accent); 
+    padding: 10px 14px; 
     border-radius: 4px; 
     font-size: 1.05rem; 
-    font-family: inherit;
+    font-weight: 600;
   }
-  input:focus, select:focus { outline: none; border-color: var(--accent); }
+  input:focus, select:focus { outline: none; border-color: var(--red-base); box-shadow: 0 0 8px rgba(220, 38, 38, 0.4); }
 
-  /* Buttons */
-  .btn { background: var(--bg-card-sub); color: var(--accent); border: 1px solid var(--accent); padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; font-family: inherit;}
-  .btn:hover { background: var(--accent); color: #000; }
-  .btn-filled { background: var(--accent); color: #000; }
-  .btn-filled:hover { background: var(--accent-hover); }
-  .btn-danger { border-color: var(--danger); color: var(--danger); }
-  .btn-danger:hover { background: var(--danger); color: #fff; }
-  .btn-sm { padding: 8px 12px; font-size: 0.95rem; }
-  .btn-train { background: var(--bg-main); color: var(--accent); border:1px solid var(--accent); padding:6px 10px; border-radius:4px; font-size:0.9rem; font-weight:bold; cursor:pointer; width: 100%; font-family: inherit;}
-  .btn-train:hover:not(:disabled) { background: var(--accent); color: #000; }
-  .btn-train:disabled { border-color: var(--border); color: var(--text-dim); cursor: not-allowed; }
-  .btn-edge { background: #0284c7; padding: 6px 14px; font-size: 0.95rem; border-radius: 4px; color: #fff; border: none; cursor: pointer; font-weight: bold; font-family: inherit;}
+  /* ------------------------------- */
+  /* 3D TACTICAL BUTTONS             */
+  /* ------------------------------- */
+  .btn { 
+    background: linear-gradient(to bottom, var(--red-base), #991b1b);
+    color: #fff; 
+    border: 1px solid var(--red-dark); 
+    border-top: 1px solid var(--red-light);
+    border-left: 1px solid var(--red-light);
+    padding: 12px 18px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 1.1rem; 
+    text-transform: uppercase;
+    box-shadow: 0 5px 0 var(--red-dark), 0 8px 10px rgba(0,0,0,0.6);
+    transition: all 0.1s;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  }
+  .btn:active { 
+    transform: translateY(5px); 
+    box-shadow: 0 0 0 var(--red-dark), 0 2px 3px rgba(0,0,0,0.6); 
+  }
+  
+  /* Grey Secondary 3D Button (for Red Shirts/Utility) */
+  .btn-grey { 
+    background: linear-gradient(to bottom, #525252, #262626);
+    color: #fff;
+    border: 1px solid #171717; 
+    border-top: 1px solid #737373;
+    border-left: 1px solid #737373;
+    padding: 12px 18px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 1.1rem; 
+    text-transform: uppercase;
+    box-shadow: 0 5px 0 #171717, 0 8px 10px rgba(0,0,0,0.6);
+    transition: all 0.1s;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  }
+  .btn-grey:active { 
+    transform: translateY(5px); 
+    box-shadow: 0 0 0 #171717, 0 2px 3px rgba(0,0,0,0.6); 
+  }
+
+  /* Small Buttons */
+  .btn-sm { padding: 8px 12px; font-size: 0.95rem; box-shadow: 0 4px 0 var(--red-dark), 0 5px 5px rgba(0,0,0,0.6); }
+  .btn-sm:active { transform: translateY(4px); box-shadow: 0 0 0 var(--red-dark), 0 2px 2px rgba(0,0,0,0.6); }
+  
+  .btn-grey.btn-sm { box-shadow: 0 4px 0 #171717, 0 5px 5px rgba(0,0,0,0.6); }
+  .btn-grey.btn-sm:active { transform: translateY(4px); box-shadow: 0 0 0 #171717, 0 2px 2px rgba(0,0,0,0.6); }
+
+  /* Small Matrix Training Buttons */
+  .btn-train { 
+    background: linear-gradient(to bottom, #404040, #1f1f1f); 
+    color: var(--white-accent); 
+    border: 1px solid #111; 
+    border-top: 1px solid #555;
+    border-left: 1px solid #555;
+    padding: 8px 10px; 
+    border-radius: 4px; 
+    font-size: 0.9rem; 
+    cursor: pointer; 
+    width: 100%; 
+    box-shadow: 0 3px 0 #111;
+    font-family: 'Russo One', sans-serif;
+  }
+  .btn-train:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 0 0 #111; }
+  .btn-train:disabled { opacity: 0.5; cursor: not-allowed; }
 
   /* Responsive Button Groups */
-  .btn-group { display: flex; gap: 8px; margin-top: 14px; }
+  .btn-group { display: flex; gap: 12px; margin-top: 16px; }
   @media (max-width: 600px) {
     .btn-group { flex-direction: column; }
-    .btn-group .btn { width: 100%; text-align: center; }
+    .btn-group .btn, .btn-group .btn-grey { width: 100%; text-align: center; }
   }
 
   /* Data Tables */
   .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 1rem; min-width: 600px; }
-  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  th { color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase; }
+  th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--border-dark); vertical-align: middle; }
+  th { color: var(--text-muted); font-size: 0.95rem; text-transform: uppercase; }
 
-  .table-input { padding: 8px !important; font-size: 1rem !important; border-radius: 2px !important; }
-  .table-input-num { width: 60px !important; text-align: center; }
+  .table-input { padding: 8px !important; font-size: 1rem !important; border-radius: 4px !important; }
+  .table-input-num { width: 65px !important; text-align: center; }
 
   /* Badges */
-  .summary-badge { font-size: 0.95rem; padding: 4px 12px; border-radius: 4px; background: var(--bg-card-sub); border: 1px solid var(--border); color: #fff; }
-  .badge-sp { color: #000; font-weight: bold; background: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 0.95rem; }
-  .badge-edge { color: #fff; font-weight: bold; background: var(--bg-main); border: 1px solid var(--edge-color); padding: 4px 10px; border-radius: 4px; font-size: 1rem; }
-  .status-kia { color: var(--danger); font-weight: bold; }
+  .summary-badge { font-size: 1rem; padding: 4px 12px; border-radius: 4px; background: #000; border: 1px solid var(--border-light); color: #fff; font-family: 'Russo One'; }
+  .badge-sp { color: #fff; font-weight: bold; background: var(--red-base); padding: 4px 10px; border-radius: 4px; font-size: 0.95rem; }
+  .badge-edge { color: #fff; font-weight: bold; background: #262626; border: 1px solid #737373; padding: 4px 10px; border-radius: 4px; font-size: 1rem; }
+  .status-kia { color: var(--red-hover); font-weight: bold; }
   .status-wounded { color: #eab308; font-weight: bold; }
-  .status-ok { color: var(--success); }
+  .status-ok { color: #22c55e; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -153,26 +270,36 @@
 <div class="container">
   <header>
     <div class="header-brand">
-      <!-- Tactical Ace of Spades SVG Logo -->
+      
+      <!-- BADASS FIGHTER PILOT SVG LOGO -->
       <svg class="aces-logo-btn" viewBox="0 0 200 200">
-        <rect width="200" height="200" fill="#202020" rx="16"/>
-        <circle cx="100" cy="100" r="80" fill="none" stroke="#22c55e" stroke-width="4" stroke-dasharray="15 10"/>
-        <line x1="20" y1="100" x2="60" y2="100" stroke="#22c55e" stroke-width="4"/>
-        <line x1="140" y1="100" x2="180" y2="100" stroke="#22c55e" stroke-width="4"/>
-        <line x1="100" y1="20" x2="100" y2="60" stroke="#22c55e" stroke-width="4"/>
-        <line x1="100" y1="140" x2="100" y2="180" stroke="#22c55e" stroke-width="4"/>
-        <path d="M100 45 L150 120 Q150 140 130 140 Q115 140 100 125 Q85 140 70 140 Q50 140 50 120 Z" fill="#2c2c2c" stroke="#22c55e" stroke-width="4"/>
-        <path d="M92 125 L100 155 L108 125 Z" fill="#22c55e"/>
-        <text x="100" y="112" fill="#22c55e" font-family="monospace" font-size="48" font-weight="bold" text-anchor="middle">A</text>
+        <!-- Background -->
+        <rect width="200" height="200" fill="#151515" rx="16"/>
+        <!-- Helmet Dome -->
+        <path d="M 35 100 C 35 25, 165 25, 165 100 L 165 140 C 165 175, 145 195, 100 195 C 55 195, 35 175, 35 140 Z" fill="#262626" stroke="#ffffff" stroke-width="4"/>
+        <!-- Red Center Stripe -->
+        <path d="M 85 30 L 115 30 L 115 80 L 85 80 Z" fill="#dc2626"/>
+        <!-- Tactical Visor (Red Gloss) -->
+        <path d="M 45 100 Q 100 115 155 100 L 145 135 Q 100 155 55 135 Z" fill="#000000" stroke="#dc2626" stroke-width="4"/>
+        <path d="M 55 105 Q 100 115 145 105 L 138 125 Q 100 140 62 125 Z" fill="#dc2626" opacity="0.9"/>
+        <!-- Visor Glint/Reflection -->
+        <polygon points="120,110 135,110 125,125" fill="#ffffff" opacity="0.7"/>
+        <!-- Oxygen Mask / Respirator -->
+        <path d="M 65 145 Q 100 130 135 145 L 120 185 Q 100 200 80 185 Z" fill="#404040" stroke="#ffffff" stroke-width="3"/>
+        <path d="M 90 145 L 110 145 L 105 180 L 95 180 Z" fill="#151515"/>
+        <!-- Corrugated Breathing Tube -->
+        <path d="M 100 175 Q 100 195 125 210" fill="none" stroke="#262626" stroke-width="16" stroke-linecap="round"/>
+        <path d="M 100 175 Q 100 195 125 210" fill="none" stroke="#a3a3a3" stroke-width="10" stroke-dasharray="5 5"/>
       </svg>
+
       <div>
         <h1>Alpha Strike Hot Drops</h1>
-        <small style="color:var(--text-dim);">Pilot and Sortie Tracker</small>
+        <small style="color:var(--text-muted); font-size: 1rem; font-weight: 600;">Tactical Pilot &amp; Sortie Tracker</small>
       </div>
     </div>
     <div class="header-actions">
       <div class="sp-counter">WARCHEST: <span id="currentSP">400</span> SP</div>
-      <button class="btn btn-danger btn-sm" onclick="promptResetWarchest()">SET SP</button>
+      <button class="btn btn-sm btn-grey" onclick="promptResetWarchest()">SET SP</button>
     </div>
   </header>
 
@@ -195,7 +322,7 @@
         <div id="unitAList"></div>
         <div class="btn-group">
           <button class="btn btn-sm" style="flex:1;" onclick="addRosterUnit('A', true)">+ ADD NAMED PILOT</button>
-          <button class="btn btn-filled btn-sm" style="flex:1;" onclick="addRosterUnit('A', false)">+ ADD RED SHIRT</button>
+          <button class="btn-grey btn-sm" style="flex:1;" onclick="addRosterUnit('A', false)">+ ADD RED SHIRT</button>
         </div>
       </div>
 
@@ -208,12 +335,12 @@
         <div id="unitBList"></div>
         <div class="btn-group">
           <button class="btn btn-sm" style="flex:1;" onclick="addRosterUnit('B', true)">+ ADD NAMED PILOT</button>
-          <button class="btn btn-filled btn-sm" style="flex:1;" onclick="addRosterUnit('B', false)">+ ADD RED SHIRT</button>
+          <button class="btn-grey btn-sm" style="flex:1;" onclick="addRosterUnit('B', false)">+ ADD RED SHIRT</button>
         </div>
       </div>
     </div>
-    <div style="text-align:right; font-size:0.95rem; color:var(--text-dim);">
-      TOTAL NAMED PILOTS: <b id="namedPilotCount" style="color:var(--accent);">0</b> / 6 MAX
+    <div style="text-align:right; font-size:1rem; font-weight: bold; color:var(--text-muted);">
+      TOTAL NAMED PILOTS: <b id="namedPilotCount" style="color:var(--white-accent);">0</b> / 6 MAX
     </div>
   </div>
 
@@ -254,11 +381,11 @@
           <label>DESTROYED ENEMIES (SCRAP @ +5 SP)</label>
           <input type="number" id="destroyedEnemies" value="0" min="0" oninput="calcIncome()">
         </div>
-        <p style="font-weight:bold; font-size:1.2rem; margin-top:10px;">
-          COMPANY EARNINGS: <span id="earnedSPTotal" style="color:var(--accent);">50</span> SP
+        <p style="font-family:'Russo One'; font-size:1.4rem; margin-top:10px;">
+          COMPANY EARNINGS: <span id="earnedSPTotal" style="color:#22c55e;">50</span> SP
         </p>
 
-        <h3 style="margin-top:20px; margin-bottom:8px; font-size:1.1rem; color:var(--text-dim);">PILOT SP POOL DISTRIBUTION</h3>
+        <h3 style="margin-top:24px; margin-bottom:8px; font-size:1.1rem; color:var(--white-accent);">PILOT SP POOL DISTRIBUTION</h3>
         <div class="form-group">
           <label>TOTAL SP ALLOCATED TO PILOTS</label>
           <input type="number" id="pilotSortiePool" value="80" min="0">
@@ -297,18 +424,18 @@
             <option value="destroyed">FRAME DESTROYED (SIZE x 100 SP)</option>
           </select>
         </div>
-        <div style="background:var(--bg-main); padding:10px; border-radius:4px; border:1px solid var(--border); margin-bottom:10px;">
-          CALCULATED REPAIR COST: <b id="repairCostDisplay" style="color:var(--danger); font-size:1.15rem;">20</b> SP
+        <div style="background:#000; padding:12px; border-radius:4px; border:2px solid var(--border-light); margin-bottom:16px;">
+          CALCULATED REPAIR COST: <b id="repairCostDisplay" style="color:var(--red-hover); font-size:1.25rem;">20</b> SP
         </div>
-        <button class="btn btn-danger" style="width:100%; margin-bottom:12px;" onclick="executeSingleRepair()">AUTHORIZE REPAIR DEDUCTION</button>
+        <button class="btn btn-grey" style="width:100%; margin-bottom:16px;" onclick="executeSingleRepair()">AUTHORIZE REPAIR DEDUCTION</button>
 
-        <h3 style="margin-top:20px; margin-bottom:8px; font-size:1.1rem; color:var(--text-dim);">MEDICAL CARE</h3>
-        <p style="font-size:0.9rem; color:var(--text-dim); margin-bottom:10px;">Wounded pilots require 100 SP for surgery or must sit out.</p>
-        <button class="btn" style="width:100%;" onclick="openMedicalDialog()">TREAT WOUNDED PILOT (100 SP)</button>
+        <h3 style="margin-top:20px; margin-bottom:8px; font-size:1.1rem; color:var(--white-accent);">MEDICAL CARE</h3>
+        <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:12px;">Wounded pilots require 100 SP for surgery or must sit out.</p>
+        <button class="btn btn-grey" style="width:100%;" onclick="openMedicalDialog()">TREAT WOUNDED PILOT (100 SP)</button>
       </div>
     </div>
 
-    <button class="btn btn-filled" style="width:100%; font-size:1.2rem; padding:16px;" onclick="finalizeSortieSequence()">
+    <button class="btn" style="width:100%; font-size:1.3rem; padding:18px;" onclick="finalizeSortieSequence()">
       SETTLE SORTIE, DEPOSIT PROFIT &amp; DISTRIBUTE PILOT SP
     </button>
   </div>
@@ -333,24 +460,24 @@
             <option value="B">UNIT BETA</option>
           </select>
         </div>
-        <p style="margin-bottom:12px; font-size: 1.1rem;">COST (PV &times; 40 SP): <b id="buyCostDisplay" style="color:var(--accent);">1400</b> SP</p>
-        <button class="btn btn-filled" style="width:100%; margin-bottom:16px;" onclick="purchaseUnit()">REQUISITION CHASSIS</button>
+        <p style="margin-bottom:16px; font-size: 1.15rem; font-family:'Russo One';">COST (PV &times; 40 SP): <b id="buyCostDisplay" style="color:var(--white-accent);">1400</b> SP</p>
+        <button class="btn" style="width:100%; margin-bottom:20px;" onclick="purchaseUnit()">REQUISITION CHASSIS</button>
 
-        <hr style="border:0; border-top:1px dashed var(--border); margin:16px 0;">
-        <button class="btn" style="width:100%;" onclick="recruitNamedPilot()">HIRE NAMED PILOT (150 SP)</button>
+        <hr style="border:0; border-top:2px dashed var(--border-light); margin:20px 0;">
+        <button class="btn btn-grey" style="width:100%;" onclick="recruitNamedPilot()">HIRE NAMED PILOT (150 SP)</button>
       </div>
 
       <div class="card">
         <h2>SALVAGE &amp; SURVIVAL CHECKS (2D6)</h2>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
-          <button class="btn btn-sm" onclick="rollSalvage('BATTLEMECH', 4)">'MECH (4+)</button>
-          <button class="btn btn-sm" onclick="rollSalvage('VEHICLE', 6)">VEHICLE (6+)</button>
-          <button class="btn btn-sm" onclick="rollSalvage('BATTLE ARMOR', 8)">ARMOR (8+)</button>
-          <button class="btn btn-sm" onclick="rollSalvage('INFANTRY', 10)">INFANTRY (10+)</button>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <button class="btn btn-grey btn-sm" onclick="rollSalvage('BATTLEMECH', 4)">'MECH (4+)</button>
+          <button class="btn btn-grey btn-sm" onclick="rollSalvage('VEHICLE', 6)">VEHICLE (6+)</button>
+          <button class="btn btn-grey btn-sm" onclick="rollSalvage('BATTLE ARMOR', 8)">ARMOR (8+)</button>
+          <button class="btn btn-grey btn-sm" onclick="rollSalvage('INFANTRY', 10)">INFANTRY (10+)</button>
         </div>
-        <button class="btn btn-danger" style="width:100%;" onclick="rollCrewSurvival()">ROLL PILOT SURVIVAL / INJURY (2D6)</button>
+        <button class="btn" style="width:100%; margin-bottom: 8px;" onclick="rollCrewSurvival()">ROLL PILOT SURVIVAL / INJURY (2D6)</button>
         
-        <div id="rollOutput" style="margin-top:16px; font-size:1rem; padding:12px; background:var(--bg-main); border-radius:4px; min-height:80px; border:1px solid var(--border);">
+        <div id="rollOutput" style="margin-top:16px; font-size:1.05rem; padding:16px; background:#000; border-radius:6px; min-height:80px; border:2px solid var(--border-light); font-family: monospace;">
           > SYSTEM STANDBY...
         </div>
       </div>
@@ -378,7 +505,7 @@
   };
 
   function loadState() {
-    const saved = localStorage.getItem('bt_aces_tactical_v1');
+    const saved = localStorage.getItem('bt_aces_3d_v1');
     if (saved) {
       try { state = JSON.parse(saved); } catch(e) { console.error(e); }
     }
@@ -392,7 +519,7 @@
   }
 
   function saveState() {
-    localStorage.setItem('bt_aces_tactical_v1', JSON.stringify(state));
+    localStorage.setItem('bt_aces_3d_v1', JSON.stringify(state));
     updateSPDisplay();
     renderRoster();
     renderTraining();
@@ -432,11 +559,11 @@
         pvTotal += parseInt(item.pv) || 0;
         html += `
           <tr>
-            <td><span class="summary-badge" style="${item.isNamed ? 'border-color:var(--accent); color:var(--accent); background:var(--bg-main);' : ''}">${item.isNamed ? 'NAMED' : 'GRUNT'}</span></td>
+            <td><span class="summary-badge" style="${item.isNamed ? 'border-color:var(--red-light); color:var(--red-light); background:#000;' : ''}">${item.isNamed ? 'NAMED' : 'GRUNT'}</span></td>
             <td><input class="table-input" value="${item.pilot}" onchange="updateUnit('${lance}', ${idx}, 'pilot', this.value)"></td>
             <td><input class="table-input" value="${item.mech}" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
             <td><input class="table-input table-input-num" type="number" value="${item.pv}" onchange="updateUnit('${lance}', ${idx}, 'pv', this.value)"></td>
-            <td style="text-align:center;">${item.skill}</td>
+            <td style="text-align:center; font-weight:bold;">${item.skill}</td>
             <td style="text-align:center;"><span class="badge-edge">${item.edgeCurrent}/${item.edgeMax}</span></td>
             <td>
               <select class="table-input" onchange="updateUnit('${lance}', ${idx}, 'status', this.value)">
@@ -446,7 +573,7 @@
                 <option value="KIA" ${item.status==='KIA'?'selected':''}>KIA</option>
               </select>
             </td>
-            <td><button class="btn btn-danger btn-sm" onclick="removeUnit('${lance}', ${idx})">X</button></td>
+            <td><button class="btn btn-danger btn-sm" style="padding: 6px 10px;" onclick="removeUnit('${lance}', ${idx})">X</button></td>
           </tr>
         `;
       });
@@ -479,11 +606,11 @@
               <span class="badge-sp">BANK: ${item.spBank} SP</span>
             </div>
             
-            <div style="font-size:0.95rem; margin-bottom:12px; color:var(--text-dim);">
-              ROLE: <b>${item.role || 'UNASSIGNED'}</b> | STATUS: <b class="${item.status === 'OK' ? 'status-ok' : item.status === 'Wounded' ? 'status-wounded' : 'status-kia'}">${item.status}</b>
+            <div style="font-size:1rem; margin-bottom:16px; color:var(--text-muted); font-weight:600;">
+              ROLE: <b style="color:#fff;">${item.role || 'UNASSIGNED'}</b> | STATUS: <b class="${item.status === 'OK' ? 'status-ok' : item.status === 'Wounded' ? 'status-wounded' : 'status-kia'}">${item.status}</b>
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-bottom:14px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-bottom:16px;">
               <div>
                 <label>SKILL (${item.skill})</label>
                 <button class="btn-train" ${!skillCost || item.spBank < skillCost ? 'disabled' : ''} onclick="trainSkill('${lance}', ${idx})">
@@ -504,15 +631,15 @@
               </div>
             </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-main); padding:10px 14px; border-radius:4px; border:1px solid var(--border); margin-bottom:12px;">
-              <span style="font-size:1.05rem; color:var(--text-main); font-weight:bold;">EDGE: ${item.edgeCurrent} / ${item.edgeMax}</span>
-              <div style="display:flex; gap:8px;">
-                <button class="btn-edge" onclick="adjustEdge('${lance}', ${idx}, -1)">- SPEND</button>
-                <button class="btn-edge" onclick="adjustEdge('${lance}', ${idx}, 1)">+ RESTORE</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#000; padding:12px 16px; border-radius:6px; border:1px solid var(--border-light); margin-bottom:16px;">
+              <span style="font-size:1.1rem; color:var(--white-accent); font-weight:bold; font-family:'Russo One';">EDGE: ${item.edgeCurrent} / ${item.edgeMax}</span>
+              <div style="display:flex; gap:10px;">
+                <button class="btn-grey btn-sm" onclick="adjustEdge('${lance}', ${idx}, -1)">- SPEND</button>
+                <button class="btn-grey btn-sm" onclick="adjustEdge('${lance}', ${idx}, 1)">+ RESTORE</button>
               </div>
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
               <div>
                 <label>ROLE ASSIGNMENT</label>
                 <input type="text" value="${item.role || ''}" placeholder="e.g. Brawler" onchange="updateUnit('${lance}', ${idx}, 'role', this.value)">
@@ -525,7 +652,7 @@
           </div>
         `;
       });
-      container.innerHTML = html || '<p style="color:var(--text-dim); font-size:1rem;">> NO NAMED PERSONNEL IN THIS UNIT.</p>';
+      container.innerHTML = html || '<p style="color:var(--text-muted); font-size:1rem; font-weight:bold;">> NO NAMED PERSONNEL IN THIS UNIT.</p>';
     });
   }
 
@@ -812,7 +939,7 @@
     const d1 = d6(), d2 = d6(), total = d1 + d2;
     const pass = total >= target;
     const out = document.getElementById('rollOutput');
-    out.innerHTML = `> <b>${type} SALVAGE CHECK (TGT ${target}+):</b><br>> ROLL: [${d1}]+[${d2}] = <b style="font-size:1.2rem; color:var(--accent);">${total}</b><br>> RESULT: <span style="color:${pass ? 'var(--success)' : 'var(--danger)'}; font-weight:bold;">${pass ? 'SALVAGED / SECURED' : 'DESTROYED / WRITTEN OFF'}</span>`;
+    out.innerHTML = `> <b style="color:var(--white-accent);">${type} SALVAGE CHECK (TGT ${target}+):</b><br>> ROLL: [${d1}]+[${d2}] = <b style="font-size:1.3rem; color:var(--red-light);">${total}</b><br>> RESULT: <span style="color:${pass ? 'var(--success)' : 'var(--red-hover)'}; font-weight:bold;">${pass ? 'SALVAGED / SECURED' : 'DESTROYED / WRITTEN OFF'}</span>`;
   }
 
   function rollCrewSurvival() {
@@ -822,7 +949,7 @@
     else if (total <= 6) res = "<span class='status-wounded'>WOUNDED (REQ: 100 SP MED-EVAC)</span>";
     else res = "<span class='status-ok'>UNINJURED / CLEAR</span>";
     
-    document.getElementById('rollOutput').innerHTML = `> <b>CREW SURVIVAL CHECK (2D6):</b><br>> ROLL: [${d1}]+[${d2}] = <b style="font-size:1.2rem; color:var(--accent);">${total}</b><br>> STATUS: ${res}`;
+    document.getElementById('rollOutput').innerHTML = `> <b style="color:var(--white-accent);">CREW SURVIVAL CHECK (2D6):</b><br>> ROLL: [${d1}]+[${d2}] = <b style="font-size:1.3rem; color:var(--red-light);">${total}</b><br>> STATUS: ${res}`;
   }
 
   window.onload = loadState;
