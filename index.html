@@ -463,12 +463,14 @@
     event.target.classList.add('active');
   }
 
-  function renderRoster() {
+function renderRoster() {
     ['A', 'B'].forEach(lance => {
       const list = lance === 'A' ? state.unitA : state.unitB;
       const container = document.getElementById(`unit${lance}List`);
       let pvTotal = 0;
-      let html = '<table><thead><tr><th>Pilot</th><th>Unit Chassis</th><th style="text-align:center;">PV</th><th style="text-align:center;">Skill</th><th style="text-align:center;">Edge</th><th style="text-align:center;">XP</th><th>Status</th><th></th></tr></thead><tbody>';
+      
+      // We added <div class="table-responsive"> right before the <table> tag
+      let html = '<div class="table-responsive"><table><thead><tr><th>Pilot</th><th>Unit Chassis</th><th style="text-align:center;">PV</th><th style="text-align:center;">Skill</th><th style="text-align:center;">Edge</th><th style="text-align:center;">XP</th><th>Status</th><th></th></tr></thead><tbody>';
       
       list.forEach((item, idx) => {
         pvTotal += parseInt(item.pv) || 0;
@@ -491,11 +493,13 @@
           </tr>
         `;
       });
-      html += '</tbody></table>';
+      
+      // We added </div> right after the closing </table> tag
+      html += '</tbody></table></div>';
       container.innerHTML = html;
       document.getElementById(`unit${lance}PVSum`).textContent = `${pvTotal} / 200 PV`;
     });
-  }
+  }  
 
   function renderTraining() {
     ['A', 'B'].forEach(lance => {
