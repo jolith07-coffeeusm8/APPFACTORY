@@ -31,12 +31,12 @@
 
 <style>
   :root {
-    --bg-main: #101216;
-    --bg-card: #181c24;
-    --bg-card-sub: #222834;
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-sub: #334155;
     --accent: #d97706;
     --accent-hover: #b45309;
-    --text-main: #f1f5f9;
+    --text-main: #f8fafc;
     --text-dim: #cbd5e1;
     --border: #475569;
     --danger: #ef4444;
@@ -47,88 +47,109 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  body { background: var(--bg-main); color: var(--text-main); padding: 20px; line-height: 1.5; font-size: 1.1rem; }
-  .container { max-width: 1300px; margin: 0 auto; }
   
-  header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
-  .header-brand { display: flex; align-items: center; gap: 16px; }
-  
-  .aces-logo-btn {
-    width: 68px;
-    height: 68px;
-    border-radius: 10px;
-    border: 2px solid var(--accent);
-    box-shadow: 0 0 14px rgba(217, 119, 6, 0.4);
-    background: #090a0d;
-    display: block;
+  body { 
+    background: var(--bg-main); 
+    color: var(--text-main); 
+    padding: 12px; 
+    line-height: 1.4; 
+    font-size: 1rem; 
   }
 
-  h1 { font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
+  .container { max-width: 1200px; margin: 0 auto; width: 100%; }
   
-  .header-actions { display: flex; align-items: center; gap: 14px; }
-  .sp-counter { font-size: 1.4rem; font-weight: bold; background: var(--bg-card); padding: 10px 20px; border-radius: 8px; border: 2px solid var(--border); }
+  /* Responsive Header */
+  header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid var(--accent); 
+    padding-bottom: 12px; 
+    margin-bottom: 16px; 
+    flex-wrap: wrap; 
+    gap: 12px; 
+  }
+  
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .aces-logo-btn { width: 50px; height: 50px; border-radius: 8px; border: 2px solid var(--accent); background: #090a0d; flex-shrink: 0; }
+  h1 { font-size: 1.35rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent); }
+  
+  .header-actions { display: flex; align-items: center; gap: 10px; width: auto; }
+  .sp-counter { font-size: 1.1rem; font-weight: bold; background: var(--bg-card); padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); }
   .sp-counter span { color: #f59e0b; }
 
-  .tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
-  .tab-btn { background: var(--bg-card); color: var(--text-dim); border: 2px solid var(--border); padding: 12px 22px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
+  /* Navigation Tabs */
+  .tabs { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+  .tab-btn { background: var(--bg-card); color: var(--text-dim); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; white-space: nowrap; }
   .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   .panel { display: none; }
   .panel.active { display: block; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 20px; margin-bottom: 20px; }
-  .card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 10px; padding: 20px; }
-  .card h2 { font-size: 1.35rem; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  /* Responsive Grid System */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .card h2 { font-size: 1.15rem; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
 
-  .pilot-training-card { background: var(--bg-card-sub); border: 2px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
-  .pilot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: bold; font-size: 1.25rem; color: var(--accent); }
+  .pilot-training-card { background: var(--bg-card-sub); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+  .pilot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; font-size: 1.05rem; color: var(--accent); }
 
-  .form-group { margin-bottom: 14px; }
-  label { display: block; font-size: 0.95rem; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; font-weight: bold; }
+  /* Forms and Controls */
+  .form-group { margin-bottom: 10px; }
+  label { display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 4px; text-transform: uppercase; font-weight: 600; }
   input, select, textarea { 
     width: 100%; 
     background: var(--bg-card-sub); 
-    border: 2px solid var(--border); 
+    border: 1px solid var(--border); 
     color: #fff; 
-    padding: 12px 14px; 
-    border-radius: 6px; 
-    font-size: 1.15rem; 
-    font-weight: 500;
+    padding: 8px 10px; 
+    border-radius: 4px; 
+    font-size: 0.95rem; 
   }
-  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  input:focus, select:focus, textarea:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
 
-  .btn { background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1.05rem; }
+  /* Buttons */
+  .btn { background: var(--accent); color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.95rem; }
   .btn:hover { background: var(--accent-hover); }
   .btn-danger { background: var(--danger); }
   .btn-danger:hover { background: var(--danger-hover); }
-  .btn-sm { padding: 8px 14px; font-size: 1rem; }
-  .btn-edge { background: #0284c7; padding: 6px 14px; font-size: 0.95rem; border-radius: 6px; color: #fff; border: none; cursor: pointer; font-weight: bold; }
-  .btn-edge:hover { background: #0369a1; }
-  .btn-skill-buy { background: #15803d; color:#fff; border:none; padding:8px 10px; border-radius:6px; font-size:0.95rem; font-weight:bold; cursor:pointer; margin-top:4px; }
-  .btn-skill-buy:hover { background: #166534; }
-  .btn-ability-buy { background: #7e22ce; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:0.95rem; font-weight:bold; cursor:pointer; }
-  .btn-ability-buy:hover { background: #6b21a8; }
+  .btn-sm { padding: 6px 10px; font-size: 0.85rem; }
+  .btn-edge { background: #0284c7; padding: 4px 10px; font-size: 0.85rem; border-radius: 4px; color: #fff; border: none; cursor: pointer; font-weight: bold; }
+  .btn-skill-buy { background: #15803d; color:#fff; border:none; padding:6px 8px; border-radius:4px; font-size:0.85rem; font-weight:bold; cursor:pointer; margin-top:4px; }
+  .btn-ability-buy { background: #7e22ce; color:#fff; border:none; padding:4px 8px; border-radius:4px; font-size:0.85rem; font-weight:bold; cursor:pointer; }
 
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 1.05rem; }
-  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  th { color: var(--text-dim); font-size: 0.95rem; text-transform: uppercase; }
+  /* Scrollable Roster Table for Narrow Phones */
+  .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; min-width: 480px; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  th { color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; }
 
-  .table-input {
-    padding: 8px 10px !important;
-    font-size: 1.1rem !important;
-    border-radius: 5px !important;
-  }
-  .table-input-num {
-    width: 65px !important;
-    text-align: center;
-  }
+  .table-input { padding: 4px 6px !important; font-size: 0.9rem !important; }
+  .table-input-num { width: 45px !important; text-align: center; }
 
-  .summary-badge { font-size: 1rem; padding: 4px 12px; border-radius: 14px; background: var(--bg-card-sub); border: 1px solid var(--border); }
-  .badge-edge { color: var(--edge-color); font-weight: bold; background: #082f49; border: 1px solid #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 1.05rem; }
-  .badge-xp { color: var(--xp-color); font-weight: bold; background: #3b0764; border: 1px solid #7e22ce; padding: 4px 10px; border-radius: 6px; font-size: 1.05rem; }
+  /* Badges */
+  .summary-badge { font-size: 0.85rem; padding: 2px 8px; border-radius: 10px; background: var(--bg-card-sub); border: 1px solid var(--border); }
+  .badge-edge { color: var(--edge-color); font-weight: bold; background: #082f49; border: 1px solid #0369a1; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+  .badge-xp { color: var(--xp-color); font-weight: bold; background: #3b0764; border: 1px solid #7e22ce; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
   .status-kia { color: var(--danger); font-weight: bold; }
   .status-wounded { color: #f59e0b; font-weight: bold; }
   .status-ok { color: var(--success); }
+
+  /* Tablet and Desktop Enhancements */
+  @media (min-width: 768px) {
+    body { padding: 20px; font-size: 1.05rem; }
+    h1 { font-size: 1.7rem; }
+    .aces-logo-btn { width: 64px; height: 64px; }
+    .sp-counter { font-size: 1.3rem; padding: 8px 18px; }
+    .tab-btn { font-size: 1.05rem; padding: 10px 18px; }
+    .grid { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
+    .card { padding: 20px; }
+    .card h2 { font-size: 1.3rem; }
+    input, select, textarea { font-size: 1.05rem; padding: 10px 12px; }
+    table { font-size: 1rem; }
+    .table-input { font-size: 1rem !important; padding: 6px 8px !important; }
+    .table-input-num { width: 60px !important; }
+  }
 </style>
 </head>
 <body>
