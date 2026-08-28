@@ -3,95 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BattleTech Aces Campaign Tracker</title>
+<title>Alpha Strike Hot Drops Pilot and Sortie Tracker</title>
 
 <!-- Web App Configuration -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Aces Tracker">
+<meta name="apple-mobile-web-app-title" content="Hot Drops Tracker">
 
-<!-- Self-Contained High-Res BattleTech Aces App Icon -->
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='gold' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fffbeb'/%3E%3Cstop offset='30%25' stop-color='%23fef08a'/%3E%3Cstop offset='60%25' stop-color='%23eab308'/%3E%3Cstop offset='100%25' stop-color='%23854d0e'/%3E%3C/linearGradient%3E%3CradialGradient id='bgGrad' cx='50%25' cy='60%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23271707'/%3E%3Cstop offset='100%25' stop-color='%23090a0d'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23bgGrad)'/%3E%3Cpath d='M-20 150 Q100 95 220 150 M-20 170 Q100 115 220 170 M-20 190 Q100 135 220 190 M20 120 L10 210 M50 110 L40 210 M85 105 L80 210 M120 105 L125 210 M155 110 L165 210 M185 120 L195 210' stroke='%23b45309' stroke-width='1.5' fill='none' opacity='0.75'/%3E%3Cpolygon points='16,36 34,36 25,20' fill='%23eab308' stroke='%2378350f' stroke-width='1.5'/%3E%3Ctext x='42' y='36' fill='%23ffffff' font-family='Arial Black, Impact, sans-serif' font-size='17' font-weight='900' letter-spacing='1.5'%3EBATTLETECH%3C/text%3E%3Ctext x='100' y='92' fill='url(%23gold)' font-family='Arial Black, Impact, sans-serif' font-size='50' font-weight='900' letter-spacing='2' text-anchor='middle' stroke='%231c1917' stroke-width='3.5' paint-order='stroke fill'%3EACES%3C/text%3E%3Ccircle cx='140' cy='155' r='42' fill='none' stroke='%23ef4444' stroke-width='3' stroke-dasharray='10 4'/%3E%3Ccircle cx='140' cy='155' r='32' fill='none' stroke='%23ef4444' stroke-width='1.5'/%3E%3Cpath d='M140 105 L140 205 M90 155 L190 155' stroke='%23fef08a' stroke-width='2'/%3E%3Cpolygon points='140,147 148,155 140,163 132,155' fill='%23ef4444'/%3E%3Crect x='12' y='130' width='55' height='70' fill='%23121418' stroke='%23fbbf24' stroke-width='2' rx='3'/%3E%3Crect x='18' y='136' width='43' height='14' fill='%23000' stroke='%23fbbf24' stroke-width='1.2'/%3E%3Ccircle cx='25' cy='164' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='35' cy='164' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='45' cy='164' r='3.5' fill='%23fbbf24'/%3E%3Ccircle cx='55' cy='164' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='25' cy='174' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='35' cy='174' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='45' cy='174' r='3.5' fill='%23fbbf24'/%3E%3Ccircle cx='55' cy='174' r='3' fill='%23fbbf24'/%3E%3C/svg%3E">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='gold' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fffbeb'/%3E%3Cstop offset='30%25' stop-color='%23fef08a'/%3E%3Cstop offset='60%25' stop-color='%23eab308'/%3E%3Cstop offset='100%25' stop-color='%23854d0e'/%3E%3C/linearGradient%3E%3CradialGradient id='bgGrad' cx='50%25' cy='60%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23271707'/%3E%3Cstop offset='100%25' stop-color='%23090a0d'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23bgGrad)'/%3E%3Cpath d='M-20 150 Q100 95 220 150 M-20 170 Q100 115 220 170 M-20 190 Q100 135 220 190 M20 120 L10 210 M50 110 L40 210 M85 105 L80 210 M120 105 L125 210 M155 110 L165 210 M185 120 L195 210' stroke='%23b45309' stroke-width='1.5' fill='none' opacity='0.75'/%3E%3Cpolygon points='16,36 34,36 25,20' fill='%23eab308' stroke='%2378350f' stroke-width='1.5'/%3E%3Ctext x='42' y='36' fill='%23ffffff' font-family='Arial Black, Impact, sans-serif' font-size='17' font-weight='900' letter-spacing='1.5'%3EBATTLETECH%3C/text%3E%3Ctext x='100' y='92' fill='url(%23gold)' font-family='Arial Black, Impact, sans-serif' font-size='50' font-weight='900' letter-spacing='2' text-anchor='middle' stroke='%231c1917' stroke-width='3.5' paint-order='stroke fill'%3EACES%3C/text%3E%3Ccircle cx='140' cy='155' r='42' fill='none' stroke='%23ef4444' stroke-width='3' stroke-dasharray='10 4'/%3E%3Ccircle cx='140' cy='155' r='32' fill='none' stroke='%23ef4444' stroke-width='1.5'/%3E%3Cpath d='M140 105 L140 205 M90 155 L190 155' stroke='%23fef08a' stroke-width='2'/%3E%3Cpolygon points='140,147 148,155 140,163 132,155' fill='%23ef4444'/%3E%3Crect x='12' y='130' width='55' height='70' fill='%23121418' stroke='%23fbbf24' stroke-width='2' rx='3'/%3E%3Crect x='18' y='136' width='43' height='14' fill='%23000' stroke='%23fbbf24' stroke-width='1.2'/%3E%3Ccircle cx='25' cy='164' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='35' cy='164' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='45' cy='164' r='3.5' fill='%23fbbf24'/%3E%3Ccircle cx='55' cy='164' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='25' cy='174' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='35' cy='174' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='45' cy='174' r='3.5' fill='%23fbbf24'/%3E%3Ccircle cx='55' cy='174' r='3' fill='%23fbbf24'/%3E%3C/svg%3E">
+<!-- Self-Contained SVG App Icon (No external files needed) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a1a'/%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='%2322c55e' stroke-width='6' stroke-dasharray='15 10'/%3E%3Cpath d='M100 45 L150 120 Q150 140 130 140 Q115 140 100 125 Q85 140 70 140 Q50 140 50 120 Z' fill='%23333333' stroke='%2322c55e' stroke-width='4'/%3E%3Cpath d='M90 125 L100 160 L110 125 Z' fill='%2322c55e'/%3E%3Ctext x='100' y='115' fill='%2322c55e' font-family='monospace' font-size='55' font-weight='bold' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a1a'/%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='%2322c55e' stroke-width='6' stroke-dasharray='15 10'/%3E%3Cpath d='M100 45 L150 120 Q150 140 130 140 Q115 140 100 125 Q85 140 70 140 Q50 140 50 120 Z' fill='%23333333' stroke='%2322c55e' stroke-width='4'/%3E%3Cpath d='M90 125 L100 160 L110 125 Z' fill='%2322c55e'/%3E%3Ctext x='100' y='115' fill='%2322c55e' font-family='monospace' font-size='55' font-weight='bold' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 
 <style>
   :root {
-    --bg-main: #0f172a;
-    --bg-card: #1e293b;
-    --bg-card-sub: #334155;
-    --accent: #d97706;
-    --accent-hover: #b45309;
-    --text-main: #f8fafc;
-    --text-dim: #cbd5e1;
-    --border: #475569;
+    /* Grays & Terminal Greens Palette */
+    --bg-main: #121212;
+    --bg-card: #202020;
+    --bg-card-sub: #2c2c2c;
+    --accent: #22c55e;
+    --accent-hover: #16a34a;
+    --text-main: #4ade80; 
+    --text-dim: #9ca3af;
+    --border: #404040;
     --danger: #ef4444;
     --danger-hover: #dc2626;
     --success: #22c55e;
     --edge-color: #38bdf8;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  body { background: var(--bg-main); color: var(--text-main); padding: 20px; line-height: 1.5; font-size: 1.05rem; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body { 
+    background: var(--bg-main); 
+    color: var(--text-main); 
+    font-family: 'Courier New', Courier, monospace; /* Retro Terminal Font */
+    padding: 20px; 
+    line-height: 1.5; 
+    font-size: 1.05rem; 
+  }
+  
   .container { max-width: 1300px; margin: 0 auto; }
   
-  header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  /* Header */
+  header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid var(--accent); 
+    padding-bottom: 16px; 
+    margin-bottom: 24px; 
+    flex-wrap: wrap; 
+    gap: 16px; 
+  }
   .header-brand { display: flex; align-items: center; gap: 16px; }
   
+  /* New Aces-Oriented Tactical Icon */
   .aces-logo-btn {
     width: 68px;
     height: 68px;
     border-radius: 10px;
     border: 2px solid var(--accent);
-    box-shadow: 0 0 14px rgba(217, 119, 6, 0.4);
-    background: #090a0d;
+    background: var(--bg-card);
     display: block;
   }
 
-  h1 { font-size: 1.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 4px; }
+  h1 { font-size: 1.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 4px; font-weight: bold; }
   
   .header-actions { display: flex; align-items: center; gap: 14px; }
-  .sp-counter { font-size: 1.3rem; font-weight: bold; background: var(--bg-card); padding: 10px 20px; border-radius: 8px; border: 2px solid var(--border); }
-  .sp-counter span { color: #f59e0b; }
+  .sp-counter { font-size: 1.3rem; font-weight: bold; background: var(--bg-card); padding: 10px 20px; border-radius: 4px; border: 1px solid var(--accent); color: var(--text-main); }
+  .sp-counter span { color: #fff; }
 
+  /* Navigation */
   .tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
-  .tab-btn { background: var(--bg-card); color: var(--text-dim); border: 2px solid var(--border); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.05rem; }
-  .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab-btn { background: var(--bg-card); color: var(--text-dim); border: 1px solid var(--border); padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1.05rem; transition: 0.2s; font-family: inherit;}
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
   .panel { display: none; }
   .panel.active { display: block; }
 
+  /* Grids & Cards */
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; margin-bottom: 20px; }
-  .card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 10px; padding: 20px; }
-  .card h2 { font-size: 1.3rem; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; color: var(--accent); }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+  .card h2 { font-size: 1.25rem; margin-bottom: 16px; border-bottom: 1px solid var(--accent); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; color: var(--accent); }
 
-  .pilot-training-card { background: var(--bg-card-sub); border: 2px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .pilot-training-card { background: var(--bg-card-sub); border: 1px solid var(--border); border-radius: 4px; padding: 16px; margin-bottom: 16px; }
   .pilot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: bold; font-size: 1.15rem; color: #fff; }
 
+  /* Forms */
   .form-group { margin-bottom: 14px; }
   label { display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; font-weight: bold; }
   input, select, textarea { 
     width: 100%; 
-    background: var(--bg-card-sub); 
+    background: var(--bg-main); 
     border: 1px solid var(--border); 
-    color: #fff; 
+    color: var(--text-main); 
     padding: 10px 12px; 
-    border-radius: 6px; 
+    border-radius: 4px; 
     font-size: 1.05rem; 
+    font-family: inherit;
   }
-  input:focus, select:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
 
-  .btn { background: var(--accent); color: #fff; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; }
-  .btn:hover { background: var(--accent-hover); }
-  .btn-gold { background: var(--bg-card-sub); border: 1px solid var(--accent); color: var(--accent); }
-  .btn-gold:hover { background: var(--accent); color: #fff; }
-  .btn-danger { background: var(--danger); }
-  .btn-danger:hover { background: var(--danger-hover); }
+  /* Buttons */
+  .btn { background: var(--bg-card-sub); color: var(--accent); border: 1px solid var(--accent); padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; font-family: inherit;}
+  .btn:hover { background: var(--accent); color: #000; }
+  .btn-filled { background: var(--accent); color: #000; }
+  .btn-filled:hover { background: var(--accent-hover); }
+  .btn-danger { border-color: var(--danger); color: var(--danger); }
+  .btn-danger:hover { background: var(--danger); color: #fff; }
   .btn-sm { padding: 8px 12px; font-size: 0.95rem; }
-  .btn-train { background: #166534; color:#fff; border:1px solid #22c55e; padding:6px 10px; border-radius:4px; font-size:0.9rem; font-weight:bold; cursor:pointer; width: 100%; }
-  .btn-train:disabled { background: #374151; border-color: #4b5563; color: #9ca3af; cursor: not-allowed; }
-  .btn-edge { background: #0284c7; padding: 6px 14px; font-size: 0.95rem; border-radius: 6px; color: #fff; border: none; cursor: pointer; font-weight: bold; }
+  .btn-train { background: var(--bg-main); color: var(--accent); border:1px solid var(--accent); padding:6px 10px; border-radius:4px; font-size:0.9rem; font-weight:bold; cursor:pointer; width: 100%; font-family: inherit;}
+  .btn-train:hover:not(:disabled) { background: var(--accent); color: #000; }
+  .btn-train:disabled { border-color: var(--border); color: var(--text-dim); cursor: not-allowed; }
+  .btn-edge { background: #0284c7; padding: 6px 14px; font-size: 0.95rem; border-radius: 4px; color: #fff; border: none; cursor: pointer; font-weight: bold; font-family: inherit;}
 
-  /* Responsive Buttons */
+  /* Responsive Button Groups */
   .btn-group { display: flex; gap: 8px; margin-top: 14px; }
   @media (max-width: 600px) {
     .btn-group { flex-direction: column; }
@@ -104,12 +131,16 @@
   th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   th { color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase; }
 
-  .table-input { padding: 8px !important; font-size: 1rem !important; border-radius: 4px !important; }
+  .table-input { padding: 8px !important; font-size: 1rem !important; border-radius: 2px !important; }
   .table-input-num { width: 60px !important; text-align: center; }
 
-  .summary-badge { font-size: 0.95rem; padding: 4px 12px; border-radius: 14px; background: var(--bg-card-sub); border: 1px solid var(--border); }
-  .badge-sp { color: #f59e0b; font-weight: bold; background: #291e03; border: 1px solid #ca8a04; padding: 4px 10px; border-radius: 6px; font-size: 0.95rem; }
-  .badge-edge { color: var(--edge-color); font-weight: bold; background: #082f49; border: 1px solid #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 1rem; }
+  /* Badges */
+  .summary-badge { font-size: 0.95rem; padding: 4px 12px; border-radius: 4px; background: var(--bg-card-sub); border: 1px solid var(--border); color: #fff; }
+  .badge-sp { color: #000; font-weight: bold; background: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 0.95rem; }
+  .badge-edge { color: #fff; font-weight: bold; background: var(--bg-main); border: 1px solid var(--edge-color); padding: 4px 10px; border-radius: 4px; font-size: 1rem; }
+  .status-kia { color: var(--danger); font-weight: bold; }
+  .status-wounded { color: #eab308; font-weight: bold; }
+  .status-ok { color: var(--success); }
 </style>
 </head>
 <body>
@@ -117,41 +148,34 @@
 <div class="container">
   <header>
     <div class="header-brand">
+      <!-- Tactical Ace of Spades SVG Logo -->
       <svg class="aces-logo-btn" viewBox="0 0 200 200">
-        <defs>
-          <linearGradient id="goldHdr" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#fffbeb"/><stop offset="30%" stop-color="#fef08a"/><stop offset="60%" stop-color="#eab308"/><stop offset="100%" stop-color="#854d0e"/>
-          </linearGradient>
-          <radialGradient id="bgHdr" cx="50%" cy="60%" r="60%">
-            <stop offset="0%" stop-color="#271707"/><stop offset="100%" stop-color="#090a0d"/>
-          </radialGradient>
-        </defs>
-        <rect width="200" height="200" fill="url(#bgHdr)"/>
-        <path d="M-20 150 Q100 95 220 150 M-20 170 Q100 115 220 170 M-20 190 Q100 135 220 190 M20 120 L10 210 M50 110 L40 210 M85 105 L80 210 M120 105 L125 210 M155 110 L165 210 M185 120 L195 210" stroke="#b45309" stroke-width="1.5" fill="none" opacity="0.75"/>
-        <polygon points="16,36 34,36 25,20" fill="#eab308" stroke="#78350f" stroke-width="1.5"/>
-        <text x="42" y="36" fill="#ffffff" font-family="Arial Black, Impact, sans-serif" font-size="17" font-weight="900" letter-spacing="1.5">BATTLETECH</text>
-        <text x="100" y="92" fill="url(#goldHdr)" font-family="Arial Black, Impact, sans-serif" font-size="50" font-weight="900" letter-spacing="2" text-anchor="middle" stroke="#1c1917" stroke-width="3.5" paint-order="stroke fill">ACES</text>
-        <circle cx="140" cy="155" r="42" fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="10 4"/>
-        <circle cx="140" cy="155" r="32" fill="none" stroke="#ef4444" stroke-width="1.5"/>
-        <path d="M140 105 L140 205 M90 155 L190 155" stroke="#fef08a" stroke-width="2"/>
-        <polygon points="140,147 148,155 140,163 132,155" fill="#ef4444"/>
+        <rect width="200" height="200" fill="#202020" rx="16"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#22c55e" stroke-width="4" stroke-dasharray="15 10"/>
+        <line x1="20" y1="100" x2="60" y2="100" stroke="#22c55e" stroke-width="4"/>
+        <line x1="140" y1="100" x2="180" y2="100" stroke="#22c55e" stroke-width="4"/>
+        <line x1="100" y1="20" x2="100" y2="60" stroke="#22c55e" stroke-width="4"/>
+        <line x1="100" y1="140" x2="100" y2="180" stroke="#22c55e" stroke-width="4"/>
+        <path d="M100 45 L150 120 Q150 140 130 140 Q115 140 100 125 Q85 140 70 140 Q50 140 50 120 Z" fill="#2c2c2c" stroke="#22c55e" stroke-width="4"/>
+        <path d="M92 125 L100 155 L108 125 Z" fill="#22c55e"/>
+        <text x="100" y="112" fill="#22c55e" font-family="monospace" font-size="48" font-weight="bold" text-anchor="middle">A</text>
       </svg>
       <div>
-        <h1>Aces Campaign Tracker</h1>
-        <small style="color:var(--text-dim);">Universal Alpha Strike Campaign Hub</small>
+        <h1>Alpha Strike Hot Drops</h1>
+        <small style="color:var(--text-dim);">Pilot and Sortie Tracker</small>
       </div>
     </div>
     <div class="header-actions">
-      <div class="sp-counter">Warchest: <span id="currentSP">400</span> SP</div>
-      <button class="btn btn-danger btn-sm" onclick="promptResetWarchest()">Set SP</button>
+      <div class="sp-counter">WARCHEST: <span id="currentSP">400</span> SP</div>
+      <button class="btn btn-danger btn-sm" onclick="promptResetWarchest()">SET SP</button>
     </div>
   </header>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('rosterTab')">Company Roster</button>
-    <button class="tab-btn" onclick="switchTab('trainingTab')">Pilot Academy</button>
-    <button class="tab-btn" onclick="switchTab('upkeepTab')">Sortie &amp; Logistics</button>
-    <button class="tab-btn" onclick="switchTab('marketTab')">Requisitions &amp; Dice</button>
+    <button class="tab-btn active" onclick="switchTab('rosterTab')">COMPANY ROSTER</button>
+    <button class="tab-btn" onclick="switchTab('trainingTab')">PILOT ACADEMY</button>
+    <button class="tab-btn" onclick="switchTab('upkeepTab')">SORTIE &amp; LOGISTICS</button>
+    <button class="tab-btn" onclick="switchTab('marketTab')">REQUISITIONS &amp; DICE</button>
   </div>
 
   <!-- PANEL 1: ROSTER -->
@@ -160,31 +184,31 @@
       <!-- Lance A -->
       <div class="card">
         <h2>
-          <span>Unit Alpha</span>
+          <span>UNIT ALPHA</span>
           <span class="summary-badge" id="unitAPVSum">0 / 200 PV</span>
         </h2>
         <div id="unitAList"></div>
         <div class="btn-group">
-          <button class="btn btn-sm" style="flex:1;" onclick="addRosterUnit('A', true)">+ Add Named Pilot</button>
-          <button class="btn btn-gold btn-sm" style="flex:1;" onclick="addRosterUnit('A', false)">+ Add Red Shirt</button>
+          <button class="btn btn-sm" style="flex:1;" onclick="addRosterUnit('A', true)">+ ADD NAMED PILOT</button>
+          <button class="btn btn-filled btn-sm" style="flex:1;" onclick="addRosterUnit('A', false)">+ ADD RED SHIRT</button>
         </div>
       </div>
 
       <!-- Lance B -->
       <div class="card">
         <h2>
-          <span>Unit Beta</span>
+          <span>UNIT BETA</span>
           <span class="summary-badge" id="unitBPVSum">0 / 200 PV</span>
         </h2>
         <div id="unitBList"></div>
         <div class="btn-group">
-          <button class="btn btn-sm" style="flex:1;" onclick="addRosterUnit('B', true)">+ Add Named Pilot</button>
-          <button class="btn btn-gold btn-sm" style="flex:1;" onclick="addRosterUnit('B', false)">+ Add Red Shirt</button>
+          <button class="btn btn-sm" style="flex:1;" onclick="addRosterUnit('B', true)">+ ADD NAMED PILOT</button>
+          <button class="btn btn-filled btn-sm" style="flex:1;" onclick="addRosterUnit('B', false)">+ ADD RED SHIRT</button>
         </div>
       </div>
     </div>
     <div style="text-align:right; font-size:0.95rem; color:var(--text-dim);">
-      Total Named Pilots: <b id="namedPilotCount" style="color:#f59e0b;">0</b> / 6 Max
+      TOTAL NAMED PILOTS: <b id="namedPilotCount" style="color:var(--accent);">0</b> / 6 MAX
     </div>
   </div>
 
@@ -192,11 +216,11 @@
   <div id="trainingTab" class="panel">
     <div class="grid">
       <div class="card">
-        <h2>Unit Alpha: Named Pilots</h2>
+        <h2>UNIT ALPHA: NAMED PILOTS</h2>
         <div id="unitATrainingList"></div>
       </div>
       <div class="card">
-        <h2>Unit Beta: Named Pilots</h2>
+        <h2>UNIT BETA: NAMED PILOTS</h2>
         <div id="unitBTrainingList"></div>
       </div>
     </div>
@@ -207,80 +231,80 @@
     <div class="grid">
       <!-- Mission Outcome -->
       <div class="card">
-        <h2>1. Mission Outcome &amp; Payout</h2>
+        <h2>1. MISSION OUTCOME &amp; PAYOUT</h2>
         <div class="form-group">
-          <label>Scenario Outcome Base SP</label>
+          <label>SCENARIO OUTCOME BASE SP</label>
           <select id="missionOutcome" onchange="calcIncome()">
-            <option value="50">Decisive Victory (+50 SP)</option>
-            <option value="40">Marginal Victory (+40 SP)</option>
-            <option value="20">Marginal Defeat / Evac (+20 SP)</option>
-            <option value="10">Decisive Defeat (+10 SP)</option>
+            <option value="50">DECISIVE VICTORY (+50 SP)</option>
+            <option value="40">MARGINAL VICTORY (+40 SP)</option>
+            <option value="20">MARGINAL DEFEAT / EVAC (+20 SP)</option>
+            <option value="10">DECISIVE DEFEAT (+10 SP)</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Bonus Objectives SP</label>
+          <label>BONUS OBJECTIVES SP</label>
           <input type="number" id="bonusSP" value="0" min="0" oninput="calcIncome()">
         </div>
         <div class="form-group">
-          <label>Destroyed Enemies (Scrap @ +5 SP each)</label>
+          <label>DESTROYED ENEMIES (SCRAP @ +5 SP)</label>
           <input type="number" id="destroyedEnemies" value="0" min="0" oninput="calcIncome()">
         </div>
         <p style="font-weight:bold; font-size:1.2rem; margin-top:10px;">
-          Company Earnings: <span id="earnedSPTotal" style="color:var(--success);">50</span> SP
+          COMPANY EARNINGS: <span id="earnedSPTotal" style="color:var(--accent);">50</span> SP
         </p>
 
-        <h3 style="margin-top:20px; margin-bottom:8px; font-size:1.1rem; color:var(--text-dim);">Pilot Post-Sortie SP Pool</h3>
+        <h3 style="margin-top:20px; margin-bottom:8px; font-size:1.1rem; color:var(--text-dim);">PILOT SP POOL DISTRIBUTION</h3>
         <div class="form-group">
-          <label>Total SP Allocated for Pilot Roster Distribution</label>
+          <label>TOTAL SP ALLOCATED TO PILOTS</label>
           <input type="number" id="pilotSortiePool" value="80" min="0">
         </div>
         <div class="form-group">
-          <label>Sortie MVP (+20 Bonus SP)</label>
+          <label>SORTIE MVP (+20 BONUS SP)</label>
           <select id="mvpSelect"></select>
         </div>
       </div>
 
       <!-- Size-Based Repair Shop -->
       <div class="card">
-        <h2>2. Battle Damage Repair Bay</h2>
+        <h2>2. BATTLE DAMAGE REPAIR BAY</h2>
         <div class="form-group">
-          <label>Unit Chassis Type</label>
+          <label>UNIT CHASSIS TYPE</label>
           <select id="repairType" onchange="calcSingleRepairCost()">
-            <option value="mech">BattleMech (Full Cost)</option>
-            <option value="vehicle">Combat Vehicle (Half Cost)</option>
+            <option value="mech">BATTLEMECH (FULL COST)</option>
+            <option value="vehicle">COMBAT VEHICLE (HALF COST)</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Unit Size Class</label>
+          <label>UNIT SIZE CLASS</label>
           <select id="repairSize" onchange="calcSingleRepairCost()">
-            <option value="1">Size 1 (Light: 20-35 Tons)</option>
-            <option value="2">Size 2 (Medium: 40-55 Tons)</option>
-            <option value="3">Size 3 (Heavy: 60-75 Tons)</option>
-            <option value="4">Size 4 (Assault: 80-100 Tons)</option>
+            <option value="1">SIZE 1 (LIGHT: 20-35 TONS)</option>
+            <option value="2">SIZE 2 (MEDIUM: 40-55 TONS)</option>
+            <option value="3">SIZE 3 (HEAVY: 60-75 TONS)</option>
+            <option value="4">SIZE 4 (ASSAULT: 80-100 TONS)</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Damage Severity</label>
+          <label>DAMAGE SEVERITY</label>
           <select id="repairSeverity" onchange="calcSingleRepairCost()">
-            <option value="armor">Armor Damage Only (Size &times; 20 SP)</option>
-            <option value="structure">Structure / Critical Damage (Size &times; 40 SP)</option>
-            <option value="crippled">Crippled Unit (Size &times; 60 SP)</option>
-            <option value="destroyed">Destroyed Frame Salvaged (Size &times; 100 SP)</option>
+            <option value="armor">ARMOR COMPROMISED (SIZE x 20 SP)</option>
+            <option value="structure">STRUCTURE / CRITICAL (SIZE x 40 SP)</option>
+            <option value="crippled">CRIPPLED UNIT (SIZE x 60 SP)</option>
+            <option value="destroyed">FRAME DESTROYED (SIZE x 100 SP)</option>
           </select>
         </div>
-        <div style="background:var(--bg-card-sub); padding:10px; border-radius:6px; border:1px solid var(--border); margin-bottom:10px;">
-          Calculated Repair Cost: <b id="repairCostDisplay" style="color:var(--danger); font-size:1.15rem;">20</b> SP
+        <div style="background:var(--bg-main); padding:10px; border-radius:4px; border:1px solid var(--border); margin-bottom:10px;">
+          CALCULATED REPAIR COST: <b id="repairCostDisplay" style="color:var(--danger); font-size:1.15rem;">20</b> SP
         </div>
-        <button class="btn btn-danger" style="width:100%; margin-bottom:12px;" onclick="executeSingleRepair()">Deduct &amp; Authorize Repair</button>
+        <button class="btn btn-danger" style="width:100%; margin-bottom:12px;" onclick="executeSingleRepair()">AUTHORIZE REPAIR DEDUCTION</button>
 
-        <h3 style="margin-top:20px; margin-bottom:8px; font-size:1.1rem; color:var(--text-dim);">Medical Care</h3>
-        <p style="font-size:0.9rem; color:var(--text-dim); margin-bottom:10px;">Wounded pilots must spend 100 SP for field surgery or sit out the next sortie.</p>
-        <button class="btn btn-gold" style="width:100%;" onclick="openMedicalDialog()">Treat Wounded Pilot (100 SP)</button>
+        <h3 style="margin-top:20px; margin-bottom:8px; font-size:1.1rem; color:var(--text-dim);">MEDICAL CARE</h3>
+        <p style="font-size:0.9rem; color:var(--text-dim); margin-bottom:10px;">Wounded pilots require 100 SP for surgery or must sit out.</p>
+        <button class="btn" style="width:100%;" onclick="openMedicalDialog()">TREAT WOUNDED PILOT (100 SP)</button>
       </div>
     </div>
 
-    <button class="btn" style="width:100%; font-size:1.2rem; padding:16px;" onclick="finalizeSortieSequence()">
-      Settle Sortie, Deposit Company Profit &amp; Distribute Pilot SP
+    <button class="btn btn-filled" style="width:100%; font-size:1.2rem; padding:16px;" onclick="finalizeSortieSequence()">
+      SETTLE SORTIE, DEPOSIT PROFIT &amp; DISTRIBUTE PILOT SP
     </button>
   </div>
 
@@ -288,41 +312,41 @@
   <div id="marketTab" class="panel">
     <div class="grid">
       <div class="card">
-        <h2>Requisitions &amp; Recruitment</h2>
+        <h2>REQUISITIONS &amp; RECRUITMENT</h2>
         <div class="form-group">
-          <label>Chassis / Unit Name</label>
-          <input type="text" id="buyName" placeholder="e.g. Thunderbolt TDR-5S">
+          <label>CHASSIS DESIGNATION</label>
+          <input type="text" id="buyName" placeholder="e.g. Warhammer WHM-6R">
         </div>
         <div class="form-group">
-          <label>Alpha Strike PV</label>
+          <label>ALPHA STRIKE PV</label>
           <input type="number" id="buyPV" value="35" min="1" oninput="calcBuyCost()">
         </div>
         <div class="form-group">
-          <label>Assign to Sub-Unit</label>
+          <label>ASSIGNMENT LANCE</label>
           <select id="buyLance">
-            <option value="A">Unit Alpha</option>
-            <option value="B">Unit Beta</option>
+            <option value="A">UNIT ALPHA</option>
+            <option value="B">UNIT BETA</option>
           </select>
         </div>
-        <p style="margin-bottom:12px; font-size: 1.1rem;">Cost (PV &times; 40 SP): <b id="buyCostDisplay" style="color:var(--accent);">1400</b> SP</p>
-        <button class="btn" style="width:100%; margin-bottom:16px;" onclick="purchaseUnit()">Requisition Chassis</button>
+        <p style="margin-bottom:12px; font-size: 1.1rem;">COST (PV &times; 40 SP): <b id="buyCostDisplay" style="color:var(--accent);">1400</b> SP</p>
+        <button class="btn btn-filled" style="width:100%; margin-bottom:16px;" onclick="purchaseUnit()">REQUISITION CHASSIS</button>
 
-        <hr style="border:0; border-top:2px dashed var(--border); margin:16px 0;">
-        <button class="btn btn-gold" style="width:100%;" onclick="recruitNamedPilot()">Hire New Named Pilot (150 SP)</button>
+        <hr style="border:0; border-top:1px dashed var(--border); margin:16px 0;">
+        <button class="btn" style="width:100%;" onclick="recruitNamedPilot()">HIRE NAMED PILOT (150 SP)</button>
       </div>
 
       <div class="card">
-        <h2>Salvage &amp; Survival Checks (2D6)</h2>
+        <h2>SALVAGE &amp; SURVIVAL CHECKS (2D6)</h2>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
-          <button class="btn btn-gold btn-sm" onclick="rollSalvage('BattleMech', 4)">'Mech (4+)</button>
-          <button class="btn btn-gold btn-sm" onclick="rollSalvage('Combat Vehicle', 6)">Vehicle (6+)</button>
-          <button class="btn btn-gold btn-sm" onclick="rollSalvage('Battle Armor', 8)">Armor (8+)</button>
-          <button class="btn btn-gold btn-sm" onclick="rollSalvage('Infantry', 10)">Infantry (10+)</button>
+          <button class="btn btn-sm" onclick="rollSalvage('BATTLEMECH', 4)">'MECH (4+)</button>
+          <button class="btn btn-sm" onclick="rollSalvage('VEHICLE', 6)">VEHICLE (6+)</button>
+          <button class="btn btn-sm" onclick="rollSalvage('BATTLE ARMOR', 8)">ARMOR (8+)</button>
+          <button class="btn btn-sm" onclick="rollSalvage('INFANTRY', 10)">INFANTRY (10+)</button>
         </div>
-        <button class="btn btn-danger" style="width:100%;" onclick="rollCrewSurvival()">Roll Pilot Survival / Injury (2D6)</button>
+        <button class="btn btn-danger" style="width:100%;" onclick="rollCrewSurvival()">ROLL PILOT SURVIVAL / INJURY (2D6)</button>
         
-        <div id="rollOutput" style="margin-top:16px; font-size:1rem; padding:12px; background:var(--bg-card-sub); border-radius:6px; min-height:80px; border:1px solid var(--border);">
-          Roll logs will display here.
+        <div id="rollOutput" style="margin-top:16px; font-size:1rem; padding:12px; background:var(--bg-main); border-radius:4px; min-height:80px; border:1px solid var(--border);">
+          > SYSTEM STANDBY...
         </div>
       </div>
     </div>
@@ -338,18 +362,18 @@
   let state = {
     sp: 400,
     unitA: [
-      { id: "p1", isNamed: true, pilot: "Alpha One", mech: "Thunderbolt", pv: 38, skill: 3, edgeMax: 2, edgeCurrent: 2, edgeAbilitiesCount: 1, role: "Brawler", abilities: "Iron Will", spBank: 150, status: "OK", participated: true },
-      { id: "p2", isNamed: true, pilot: "Alpha Two", mech: "Phoenix Hawk", pv: 35, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Skirmisher", abilities: "None", spBank: 150, status: "OK", participated: true },
-      { id: "p3", isNamed: false, pilot: "Red Shirt 1", mech: "Vindicator", pv: 30, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Sniper", abilities: "None", spBank: 0, status: "OK", participated: true }
+      { id: "p1", isNamed: true, pilot: "Alpha One", mech: "Chassis", pv: 35, skill: 3, edgeMax: 2, edgeCurrent: 2, edgeAbilitiesCount: 1, role: "Striker", abilities: "None", spBank: 150, status: "OK", participated: true },
+      { id: "p2", isNamed: true, pilot: "Alpha Two", mech: "Chassis", pv: 30, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Skirmisher", abilities: "None", spBank: 150, status: "OK", participated: true },
+      { id: "p3", isNamed: false, pilot: "Red Shirt 1", mech: "Chassis", pv: 25, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Trooper", abilities: "None", spBank: 0, status: "OK", participated: true }
     ],
     unitB: [
-      { id: "p5", isNamed: true, pilot: "Beta One", mech: "Centurion", pv: 28, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Trooper", abilities: "None", spBank: 150, status: "OK", participated: false },
-      { id: "p6", isNamed: false, pilot: "Red Shirt 2", mech: "Wasp", pv: 16, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Scout", abilities: "None", spBank: 0, status: "OK", participated: false }
+      { id: "p4", isNamed: true, pilot: "Beta One", mech: "Chassis", pv: 28, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Brawler", abilities: "None", spBank: 150, status: "OK", participated: false },
+      { id: "p5", isNamed: false, pilot: "Red Shirt 2", mech: "Chassis", pv: 20, skill: 4, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Scout", abilities: "None", spBank: 0, status: "OK", participated: false }
     ]
   };
 
   function loadState() {
-    const saved = localStorage.getItem('bt_aces_universal_v1');
+    const saved = localStorage.getItem('bt_aces_tactical_v1');
     if (saved) {
       try { state = JSON.parse(saved); } catch(e) { console.error(e); }
     }
@@ -363,7 +387,7 @@
   }
 
   function saveState() {
-    localStorage.setItem('bt_aces_universal_v1', JSON.stringify(state));
+    localStorage.setItem('bt_aces_tactical_v1', JSON.stringify(state));
     updateSPDisplay();
     renderRoster();
     renderTraining();
@@ -397,13 +421,13 @@
       const container = document.getElementById(`unit${lance}List`);
       let pvTotal = 0;
       
-      let html = '<div class="table-responsive"><table><thead><tr><th>Type</th><th>Pilot Name</th><th>Unit Chassis</th><th style="text-align:center;">PV</th><th style="text-align:center;">Skill</th><th style="text-align:center;">Edge</th><th>Status</th><th></th></tr></thead><tbody>';
+      let html = '<div class="table-responsive"><table><thead><tr><th>TYPE</th><th>CALLSIGN</th><th>CHASSIS</th><th style="text-align:center;">PV</th><th style="text-align:center;">SKILL</th><th style="text-align:center;">EDGE</th><th>STATUS</th><th></th></tr></thead><tbody>';
       
       list.forEach((item, idx) => {
         pvTotal += parseInt(item.pv) || 0;
         html += `
           <tr>
-            <td><span class="summary-badge" style="${item.isNamed ? 'border-color:var(--accent); color:var(--accent);' : ''}">${item.isNamed ? 'Named' : 'Red Shirt'}</span></td>
+            <td><span class="summary-badge" style="${item.isNamed ? 'border-color:var(--accent); color:var(--accent); background:var(--bg-main);' : ''}">${item.isNamed ? 'NAMED' : 'GRUNT'}</span></td>
             <td><input class="table-input" value="${item.pilot}" onchange="updateUnit('${lance}', ${idx}, 'pilot', this.value)"></td>
             <td><input class="table-input" value="${item.mech}" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
             <td><input class="table-input table-input-num" type="number" value="${item.pv}" onchange="updateUnit('${lance}', ${idx}, 'pv', this.value)"></td>
@@ -412,12 +436,12 @@
             <td>
               <select class="table-input" onchange="updateUnit('${lance}', ${idx}, 'status', this.value)">
                 <option value="OK" ${item.status==='OK'?'selected':''}>OK</option>
-                <option value="Wounded" ${item.status==='Wounded'?'selected':''}>Wounded</option>
-                <option value="Sitting Out" ${item.status==='Sitting Out'?'selected':''}>Sitting Out</option>
+                <option value="Wounded" ${item.status==='Wounded'?'selected':''}>WOUNDED</option>
+                <option value="Sitting Out" ${item.status==='Sitting Out'?'selected':''}>BENCHED</option>
                 <option value="KIA" ${item.status==='KIA'?'selected':''}>KIA</option>
               </select>
             </td>
-            <td><button class="btn btn-danger btn-sm" onclick="removeUnit('${lance}', ${idx})">&times;</button></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeUnit('${lance}', ${idx})">X</button></td>
           </tr>
         `;
       });
@@ -447,56 +471,56 @@
           <div class="pilot-training-card">
             <div class="pilot-header">
               <span>${item.pilot} &mdash; ${item.mech}</span>
-              <span class="badge-sp">Bank: ${item.spBank} SP</span>
+              <span class="badge-sp">BANK: ${item.spBank} SP</span>
             </div>
             
             <div style="font-size:0.95rem; margin-bottom:12px; color:var(--text-dim);">
-              Role: <b>${item.role || 'Unassigned'}</b> | Status: <b class="${item.status === 'OK' ? 'status-ok' : item.status === 'Wounded' ? 'status-wounded' : 'status-kia'}">${item.status}</b>
+              ROLE: <b>${item.role || 'UNASSIGNED'}</b> | STATUS: <b class="${item.status === 'OK' ? 'status-ok' : item.status === 'Wounded' ? 'status-wounded' : 'status-kia'}">${item.status}</b>
             </div>
 
             <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-bottom:14px;">
               <div>
-                <label>Skill (${item.skill})</label>
+                <label>SKILL (${item.skill})</label>
                 <button class="btn-train" ${!skillCost || item.spBank < skillCost ? 'disabled' : ''} onclick="trainSkill('${lance}', ${idx})">
-                  ${skillCost ? `Lvl ${nextSkill} (${skillCost} SP)` : 'MAXED'}
+                  ${skillCost ? `LVL ${nextSkill} (${skillCost} SP)` : 'MAXED'}
                 </button>
               </div>
               <div>
-                <label>Edge (${item.edgeMax})</label>
+                <label>EDGE (${item.edgeMax})</label>
                 <button class="btn-train" ${!edgeCost || item.spBank < edgeCost ? 'disabled' : ''} onclick="buyEdgeToken('${lance}', ${idx})">
-                  ${edgeCost ? `+1 Token (${edgeCost} SP)` : 'MAX (10)'}
+                  ${edgeCost ? `+1 TKN (${edgeCost} SP)` : 'MAX (10)'}
                 </button>
               </div>
               <div>
-                <label>Abilities (${item.edgeAbilitiesCount})</label>
+                <label>ABILITIES (${item.edgeAbilitiesCount})</label>
                 <button class="btn-train" ${!abilityCost || item.spBank < abilityCost ? 'disabled' : ''} onclick="buyEdgeAbility('${lance}', ${idx})">
-                  ${abilityCost ? `+1 Ability (${abilityCost} SP)` : 'MAX (5)'}
+                  ${abilityCost ? `+1 ABL (${abilityCost} SP)` : 'MAX (5)'}
                 </button>
               </div>
             </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:10px 14px; border-radius:6px; border:1px solid var(--border); margin-bottom:12px;">
-              <span style="font-size:1.05rem; color:var(--edge-color); font-weight:bold;">Edge: ${item.edgeCurrent} / ${item.edgeMax}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-main); padding:10px 14px; border-radius:4px; border:1px solid var(--border); margin-bottom:12px;">
+              <span style="font-size:1.05rem; color:var(--text-main); font-weight:bold;">EDGE: ${item.edgeCurrent} / ${item.edgeMax}</span>
               <div style="display:flex; gap:8px;">
-                <button class="btn-edge" onclick="adjustEdge('${lance}', ${idx}, -1)">- Spend</button>
-                <button class="btn-edge" onclick="adjustEdge('${lance}', ${idx}, 1)">+ Restore</button>
+                <button class="btn-edge" onclick="adjustEdge('${lance}', ${idx}, -1)">- SPEND</button>
+                <button class="btn-edge" onclick="adjustEdge('${lance}', ${idx}, 1)">+ RESTORE</button>
               </div>
             </div>
 
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
               <div>
-                <label>Role</label>
-                <input type="text" value="${item.role || ''}" placeholder="e.g. Brawler, Scout" onchange="updateUnit('${lance}', ${idx}, 'role', this.value)">
+                <label>ROLE ASSIGNMENT</label>
+                <input type="text" value="${item.role || ''}" placeholder="e.g. Brawler" onchange="updateUnit('${lance}', ${idx}, 'role', this.value)">
               </div>
               <div>
-                <label>Special Pilot Abilities</label>
-                <input type="text" value="${item.abilities || ''}" placeholder="e.g. Sniper, Iron Will" onchange="updateUnit('${lance}', ${idx}, 'abilities', this.value)">
+                <label>SPECIAL ABILITIES</label>
+                <input type="text" value="${item.abilities || ''}" placeholder="e.g. Sniper" onchange="updateUnit('${lance}', ${idx}, 'abilities', this.value)">
               </div>
             </div>
           </div>
         `;
       });
-      container.innerHTML = html || '<p style="color:var(--text-dim); font-size:1rem;">No Named Pilots in this unit.</p>';
+      container.innerHTML = html || '<p style="color:var(--text-dim); font-size:1rem;">> NO NAMED PERSONNEL IN THIS UNIT.</p>';
     });
   }
 
@@ -559,7 +583,7 @@
   function addRosterUnit(lance, isNamed) {
     const totalNamed = [...state.unitA, ...state.unitB].filter(u => u.isNamed).length;
     if (isNamed && totalNamed >= 6) {
-      alert("Campaign Constraint: You can have a maximum of 6 Named Pilots total across Alpha and Beta. Additional units must be Red Shirts.");
+      alert("COMMAND LIMIT ERROR: Maximum of 6 Named Pilots allowed across both units. Additional deployments must be Red Shirts.");
       return;
     }
 
@@ -592,11 +616,11 @@
   function recruitNamedPilot() {
     const totalNamed = [...state.unitA, ...state.unitB].filter(u => u.isNamed).length;
     if (totalNamed >= 6) {
-      alert("Maximum of 6 Named Pilots reached!");
+      alert("COMMAND LIMIT ERROR: Maximum of 6 Named Pilots reached.");
       return;
     }
     if (state.sp < 150) {
-      alert("Insufficient Warchest SP! Recruiting a new pilot costs 150 SP.");
+      alert("INSUFFICIENT FUNDS: Recruiting a new pilot costs 150 SP.");
       return;
     }
     const name = prompt("Enter new Named Pilot's callsign:", "Rookie");
@@ -620,7 +644,7 @@
       participated: false
     });
     saveState();
-    alert(`Recruited ${name} for 150 SP. (Pilot received 150 SP starting bank).`);
+    alert(`> RECRUIT ${name} AUTHORIZED. 150 SP DEDUCTED. (Pilot received 150 SP starting bank).`);
   }
 
   /* REPAIR ENGINE */
@@ -644,34 +668,34 @@
   function executeSingleRepair() {
     const cost = calcSingleRepairCost();
     if (state.sp < cost) {
-      alert(`Insufficient Warchest SP! Repair requires ${cost} SP.`);
+      alert(`INSUFFICIENT SP! Repair requires ${cost} SP.`);
       return;
     }
     if (confirm(`Authorize field repairs for ${cost} SP?`)) {
       state.sp -= cost;
       saveState();
-      alert(`Repairs completed. ${cost} SP deducted from company warchest.`);
+      alert(`> LOGISTICS UPDATE: ${cost} SP deducted from company warchest.`);
     }
   }
 
   function openMedicalDialog() {
     const wounded = [...state.unitA, ...state.unitB].filter(u => u.status === 'Wounded');
     if (wounded.length === 0) {
-      alert("No wounded pilots currently in the roster.");
+      alert("NO WOUNDED PILOTS FOUND IN SYSTEM.");
       return;
     }
     if (state.sp < 100) {
-      alert("Insufficient SP! Medical recovery costs 100 SP per pilot.");
+      alert("INSUFFICIENT SP! Medical recovery costs 100 SP per pilot.");
       return;
     }
     const names = wounded.map((w, i) => `${i + 1}. ${w.pilot}`).join('\n');
-    const choice = prompt(`Select a wounded pilot to heal (100 SP):\n${names}\nEnter number:`);
+    const choice = prompt(`SELECT PILOT FOR MEDICAL TREATMENT (100 SP):\n${names}\nEnter ID number:`);
     const idx = parseInt(choice) - 1;
     if (wounded[idx]) {
       state.sp -= 100;
       wounded[idx].status = 'OK';
       saveState();
-      alert(`${wounded[idx].pilot} has made a full medical recovery.`);
+      alert(`> ${wounded[idx].pilot} CLEared FOR ACTIVE DUTY.`);
     }
   }
 
@@ -689,7 +713,7 @@
     const mvpSelect = document.getElementById('mvpSelect');
     if (!mvpSelect) return;
     const current = mvpSelect.value;
-    mvpSelect.innerHTML = '<option value="">-- None --</option>';
+    mvpSelect.innerHTML = '<option value="">-- NO MVP DESIGNATED --</option>';
     [...state.unitA, ...state.unitB].forEach(u => {
       if (u.isNamed && u.status !== 'KIA') {
         mvpSelect.innerHTML += `<option value="${u.id}" ${current === u.id ? 'selected' : ''}>${u.pilot} (${u.mech})</option>`;
@@ -706,7 +730,7 @@
     if (allNamed.length === 0) {
       state.sp += companyIncome;
       saveState();
-      alert(`Sortie settled! +${companyIncome} SP deposited to Warchest.`);
+      alert(`> SORTIE CONCLUDED. +${companyIncome} SP DEPOSITED TO WARCHEST.`);
       return;
     }
 
@@ -718,22 +742,22 @@
 
     const baseShare = Math.floor(pilotPool / totalWeights);
 
-    let summary = `Sortie Settlement Summary:\n- Company Earnings: +${companyIncome} SP\n- Pilot Distribution Pool: ${pilotPool} SP\n\nPilot Allocations:\n`;
+    let summary = `> POST-SORTIE SETTLEMENT:\n- COMPANY EARNINGS: +${companyIncome} SP\n- PILOT DISTRIBUTION POOL: ${pilotPool} SP\n\nPILOT BANK DEPOSITS:\n`;
 
     allNamed.forEach(p => {
       const isSittingOut = p.status === 'Sitting Out';
       let earned = Math.floor(baseShare * (isSittingOut ? 0.5 : 1.0));
       if (p.id === mvpId) {
         earned += 20;
-        summary += `* ${p.pilot} [MVP]: +${earned} SP (${isSittingOut ? '50% share' : 'Full'} + 20 MVP bonus)\n`;
+        summary += `* ${p.pilot} [MVP]: +${earned} SP\n`;
       } else {
-        summary += `* ${p.pilot}: +${earned} SP (${isSittingOut ? '50% share (Sat Out)' : 'Full'})\n`;
+        summary += `* ${p.pilot}: +${earned} SP ${isSittingOut ? '(BENCHED)' : ''}\n`;
       }
       p.spBank += earned;
       if (p.status === 'Sitting Out') p.status = 'OK';
     });
 
-    if (confirm(summary + "\nConfirm and apply updates?")) {
+    if (confirm(summary + "\nCONFIRM DATA UPLOAD?")) {
       state.sp += companyIncome;
       saveState();
     }
@@ -745,13 +769,13 @@
   }
 
   function purchaseUnit() {
-    const name = document.getElementById('buyName').value || "Requisitioned Chassis";
+    const name = document.getElementById('buyName').value || "UNKNOWN CHASSIS";
     const pv = parseInt(document.getElementById('buyPV').value) || 0;
     const cost = pv * 40;
     const lance = document.getElementById('buyLance').value;
 
     if (state.sp < cost) {
-      alert(`Insufficient Warchest SP! Cost is ${cost} SP.`);
+      alert(`INSUFFICIENT WARCHEST SP. COST IS ${cost} SP.`);
       return;
     }
     state.sp -= cost;
@@ -773,7 +797,7 @@
       participated: false
     });
     saveState();
-    alert(`Purchased ${name} for ${cost} SP.`);
+    alert(`> REQUISITION APPROVED. ${name} SECURED FOR ${cost} SP.`);
   }
 
   /* 2D6 ENGINE */
@@ -783,17 +807,17 @@
     const d1 = d6(), d2 = d6(), total = d1 + d2;
     const pass = total >= target;
     const out = document.getElementById('rollOutput');
-    out.innerHTML = `<b>${type} Salvage Check (Target ${target}+):</b> Rolled [${d1}]+[${d2}] = <b>${total}</b> &rarr; <span style="color:${pass ? 'var(--success)' : 'var(--danger)'}; font-weight:bold;">${pass ? 'SALVAGED / RECOVERED' : 'DESTROYED / WRITTEN OFF'}</span>`;
+    out.innerHTML = `> <b>${type} SALVAGE CHECK (TGT ${target}+):</b><br>> ROLL: [${d1}]+[${d2}] = <b style="font-size:1.2rem; color:var(--accent);">${total}</b><br>> RESULT: <span style="color:${pass ? 'var(--success)' : 'var(--danger)'}; font-weight:bold;">${pass ? 'SALVAGED / SECURED' : 'DESTROYED / WRITTEN OFF'}</span>`;
   }
 
   function rollCrewSurvival() {
     const d1 = d6(), d2 = d6(), total = d1 + d2;
     let res = "";
-    if (total <= 3) res = "<span class='status-kia'>KIA (Killed in Action - 0 SP Earned)</span>";
-    else if (total <= 6) res = "<span class='status-wounded'>WOUNDED (Must pay 100 SP medical or sit out next sortie)</span>";
-    else res = "<span class='status-ok'>UNINJURED / OK</span>";
+    if (total <= 3) res = "<span class='status-kia'>KIA (FATAL CASUALTY)</span>";
+    else if (total <= 6) res = "<span class='status-wounded'>WOUNDED (REQ: 100 SP MED-EVAC)</span>";
+    else res = "<span class='status-ok'>UNINJURED / CLEAR</span>";
     
-    document.getElementById('rollOutput').innerHTML = `<b>Crew Survival Roll (2D6):</b> Rolled [${d1}]+[${d2}] = <b>${total}</b> &rarr; ${res}`;
+    document.getElementById('rollOutput').innerHTML = `> <b>CREW SURVIVAL CHECK (2D6):</b><br>> ROLL: [${d1}]+[${d2}] = <b style="font-size:1.2rem; color:var(--accent);">${total}</b><br>> STATUS: ${res}`;
   }
 
   window.onload = loadState;
