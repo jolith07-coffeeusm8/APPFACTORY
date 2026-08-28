@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alpha Strike Hot Drops Pilot and Sortie Tracker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha Strike Hot Drops Pilot and Sortie Tracker</title>
 
-<!-- Web App Configuration -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Hot Drops Tracker">
+  <!-- Web App Manifest (Crucial for Android) -->
+  <link rel="manifest" href="manifest.json">
 
-<!-- Self-Contained SVG App Icon (No external files needed) -->
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a1a'/%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='%2322c55e' stroke-width='6' stroke-dasharray='15 10'/%3E%3Cpath d='M100 45 L150 120 Q150 140 130 140 Q115 140 100 125 Q85 140 70 140 Q50 140 50 120 Z' fill='%23333333' stroke='%2322c55e' stroke-width='4'/%3E%3Cpath d='M90 125 L100 160 L110 125 Z' fill='%2322c55e'/%3E%3Ctext x='100' y='115' fill='%2322c55e' font-family='monospace' font-size='55' font-weight='bold' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a1a'/%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='%2322c55e' stroke-width='6' stroke-dasharray='15 10'/%3E%3Cpath d='M100 45 L150 120 Q150 140 130 140 Q115 140 100 125 Q85 140 70 140 Q50 140 50 120 Z' fill='%23333333' stroke='%2322c55e' stroke-width='4'/%3E%3Cpath d='M90 125 L100 160 L110 125 Z' fill='%2322c55e'/%3E%3Ctext x='100' y='115' fill='%2322c55e' font-family='monospace' font-size='55' font-weight='bold' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+  <!-- Web App Display Setup -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hot Drops">
+
+  <!-- Apple / iOS Home Screen Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="ACES_ICON.png">
+
+  <!-- Android / Browser Favicon -->
+  <link rel="icon" type="image/png" sizes="192x192" href="ACES_ICON.png">
+  <link rel="shortcut icon" href="ACES_ICON.png">
 
 <style>
   :root {
@@ -36,7 +42,7 @@
   body { 
     background: var(--bg-main); 
     color: var(--text-main); 
-    font-family: 'Courier New', Courier, monospace; /* Retro Terminal Font */
+    font-family: 'Courier New', Courier, monospace; 
     padding: 20px; 
     line-height: 1.5; 
     font-size: 1.05rem; 
@@ -57,7 +63,6 @@
   }
   .header-brand { display: flex; align-items: center; gap: 16px; }
   
-  /* New Aces-Oriented Tactical Icon */
   .aces-logo-btn {
     width: 68px;
     height: 68px;
@@ -695,7 +700,7 @@
       state.sp -= 100;
       wounded[idx].status = 'OK';
       saveState();
-      alert(`> ${wounded[idx].pilot} CLEared FOR ACTIVE DUTY.`);
+      alert(`> ${wounded[idx].pilot} CLEARED FOR ACTIVE DUTY.`);
     }
   }
 
