@@ -65,7 +65,22 @@
     flex-wrap: wrap; 
     gap: 16px; 
   }
-  .header-brand { display: flex; align-items: center; gap: 16px; }
+  .header-brand { display: flex; align-items: center; gap: 16px; width: 100%; max-width: 600px; }
+
+  /* Company Name Input */
+  .company-title-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px dashed var(--red-light);
+    color: var(--white-accent);
+    font-family: 'Russo One', sans-serif;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    width: 100%;
+    padding: 0 0 2px 0;
+    margin-bottom: 2px;
+  }
+  .company-title-input:focus { outline: none; border-bottom: 2px solid var(--red-base); }
 
   /* Dropdown Menu Setup */
   .dropdown { position: relative; display: inline-block; }
@@ -114,8 +129,7 @@
   .dropdown-content button:hover { background-color: var(--red-dark); }
   .show { display: block; animation: fadeIn 0.2s ease; }
 
-  h1 { font-size: 1.6rem; text-transform: uppercase; color: var(--white-accent); margin-bottom: 2px; }
-  .header-actions { display: flex; align-items: center; gap: 14px; }
+  .header-actions { display: flex; align-items: center; gap: 14px; margin-left: auto; }
   
   .sp-counter { 
     font-size: 1.3rem; background: var(--bg-card); padding: 8px 16px; 
@@ -130,7 +144,7 @@
 
   /* Grids & Cards */
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; margin-bottom: 20px; }
-  .roster-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px; } /* Stacks Alpha and Beta Vertically */
+  .roster-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px; } 
   
   .card { background: var(--bg-card); border: 2px solid var(--border-dark); border-radius: 8px; padding: 20px; box-shadow: 0 6px 12px rgba(0,0,0,0.6); }
   .card h2 { font-size: 1.25rem; margin-bottom: 16px; border-bottom: 2px solid var(--border-light); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; color: var(--white-accent); }
@@ -169,13 +183,25 @@
   .table-input { padding: 6px 8px !important; font-size: 0.95rem !important; border-radius: 4px !important; }
   .table-input-num { width: 60px !important; text-align: center; }
   .callsign-input { min-width: 130px; }
+  .input-with-dice { display: flex; align-items: center; gap: 6px; }
+
+  /* Action Buttons Group */
+  .action-group { display: inline-flex; gap: 4px; align-items: center; }
 
   /* Badges */
   .type-badge { font-family: 'Russo One', sans-serif; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background: #000; border: 1px solid var(--border-light); display: inline-block; text-align: center; min-width: 75px; letter-spacing: 0.5px; }
   .type-named { border-color: var(--red-light); color: var(--red-light); }
   .type-recruit { border-color: #a3a3a3; color: #a3a3a3; }
 
-  .summary-badge { font-size: 0.9rem; padding: 4px 12px; border-radius: 4px; background: #000; border: 1px solid var(--border-light); color: #fff; font-family: 'Russo One'; }
+  .summary-badge { font-size: 0.9rem; padding: 4px 12px; border-radius: 4px; background: #000; border: 1px solid var(--border-light); color: #fff; font-family: 'Russo One'; transition: 0.3s; }
+  
+  @keyframes redAlert {
+    0% { color: var(--red-hover); text-shadow: 0 0 5px var(--red-hover); }
+    50% { color: var(--white-accent); text-shadow: none; }
+    100% { color: var(--red-hover); text-shadow: 0 0 5px var(--red-hover); }
+  }
+  .blink-red { animation: redAlert 1.5s infinite; }
+
   .badge-sp { color: #fff; font-weight: bold; background: var(--red-base); padding: 2px 8px; border-radius: 4px; font-size: 0.9rem; }
   .badge-edge { color: #fff; font-weight: bold; background: #262626; border: 1px solid #737373; padding: 2px 8px; border-radius: 4px; font-size: 0.95rem; }
   .status-kia { color: var(--red-hover); font-weight: bold; }
@@ -184,6 +210,29 @@
 </style>
 </head>
 <body>
+
+<!-- Auto-Complete Database (Invisible) -->
+<datalist id="mech-list">
+  <option value="Locust LCT-1V"><option value="Wasp WSP-1A"><option value="Stinger STG-3R">
+  <option value="Commando COM-2D"><option value="Valkyrie VLK-QA"><option value="Spider SDR-5V">
+  <option value="Firestarter FS9-H"><option value="Jenner JR7-D"><option value="Panther PNT-9R">
+  <option value="Raven RVN-1X"><option value="Assassin ASN-21"><option value="Cicada CDA-2A">
+  <option value="Clint CLNT-2-3T"><option value="Hermes II HER-2S"><option value="Vulcan VTC-2T">
+  <option value="Whitworth WTH-1"><option value="Blackjack BJ-1"><option value="Hatchetman HCT-3F">
+  <option value="Phoenix Hawk PXH-1"><option value="Vindicator VND-1R"><option value="Centurion CN9-A">
+  <option value="Enforcer ENF-4R"><option value="Hunchback HBK-4G"><option value="Trebuchet TBT-5N">
+  <option value="Dervish DV-6M"><option value="Griffin GRF-1N"><option value="Shadow Hawk SHD-2H">
+  <option value="Wolverine WVR-6R"><option value="Dragon DRG-1N"><option value="Ostroc OSR-2C">
+  <option value="Ostsol OTL-4D"><option value="Quickdraw QKD-4G"><option value="Catapult CPLT-C1">
+  <option value="JagerMech JM6-S"><option value="Thunderbolt TDR-5S"><option value="Archer ARC-2R">
+  <option value="Cataphract CTF-1X"><option value="Grasshopper GHR-5H"><option value="Orion ON1-K">
+  <option value="Awesome AWS-8Q"><option value="Charger CGR-1A1"><option value="Goliath GOL-1H">
+  <option value="Victor VTR-9B"><option value="Zeus ZEU-6S"><option value="BattleMaster BLR-1G">
+  <option value="Stalker STK-3F"><option value="Cyclops CP-10-Z"><option value="Highlander HGN-732">
+  <option value="Banshee BNC-3E"><option value="Atlas AS7-D"><option value="King Crab KGC-0000">
+  <option value="Timber Wolf (Mad Cat)"><option value="Dire Wolf (Daishi)"><option value="Stormcrow (Ryoken)">
+  <option value="Hellbringer (Loki)"><option value="Summoner (Thor)"><option value="Mad Dog (Vulture)">
+</datalist>
 
 <div class="container">
   <header>
@@ -197,9 +246,9 @@
           <button onclick="switchTab('marketTab')">Requisitions &amp; Dice</button>
         </div>
       </div>
-      <div>
-        <h1>Alpha Strike Hot Drops</h1>
-        <small style="color:var(--text-muted); font-size: 0.95rem; font-weight: 600;">Tactical Pilot &amp; Sortie Tracker</small>
+      <div style="flex-grow: 1;">
+        <input type="text" id="companyNameInput" class="company-title-input" onchange="updateCompanyName(this.value)">
+        <small style="color:var(--text-muted); font-size: 0.95rem; font-weight: 600; display:block;">Tactical Pilot &amp; Sortie Tracker</small>
       </div>
     </div>
     <div class="header-actions">
@@ -227,7 +276,7 @@
       <!-- Lance B -->
       <div class="card">
         <h2>
-          <span>UNIT BETA</span>
+          <span>UNIT BRAVO</span>
           <span class="summary-badge" id="unitBPVSum">0 / 200 PV</span>
         </h2>
         <div id="unitBList"></div>
@@ -250,7 +299,7 @@
         <div id="unitATrainingList"></div>
       </div>
       <div class="card">
-        <h2>UNIT BETA: NAMED PILOTS</h2>
+        <h2>UNIT BRAVO: NAMED PILOTS</h2>
         <div id="unitBTrainingList"></div>
       </div>
     </div>
@@ -356,7 +405,7 @@
         <h2>REQUISITIONS &amp; RECRUITMENT</h2>
         <div class="form-group">
           <label>CHASSIS DESIGNATION</label>
-          <input type="text" id="buyName" placeholder="e.g. Warhammer WHM-6R">
+          <input type="text" id="buyName" list="mech-list" placeholder="e.g. Warhammer WHM-6R">
         </div>
         <div class="form-group">
           <label>ALPHA STRIKE PV</label>
@@ -366,7 +415,7 @@
           <label>ASSIGNMENT LANCE</label>
           <select id="buyLance">
             <option value="A">UNIT ALPHA</option>
-            <option value="B">UNIT BETA</option>
+            <option value="B">UNIT BRAVO</option>
           </select>
         </div>
         <p style="margin-bottom:16px; font-size: 1.1rem; font-family:'Russo One';">COST (PV &times; 40 SP): <b id="buyCostDisplay" style="color:var(--white-accent);">1400</b> SP</p>
@@ -400,7 +449,27 @@
   const EDGE_TOKEN_COSTS = { 2: 60, 3: 120, 4: 200, 5: 300, 6: 420, 7: 560, 8: 720, 9: 900, 10: 1100 };
   const EDGE_ABILITY_COSTS = { 1: 60, 2: 180, 3: 360, 4: 600, 5: 900 };
 
+  // 150 Embedded Sci-Fi/Mercenary Callsigns for Quick Hiring
+  const callsigns = [
+    "Viper", "Ghost", "Maverick", "Jester", "Iceman", "Goose", "Merlin", "Sundown", "Wolf", "Hound",
+    "Raven", "Crow", "Eagle", "Hawk", "Falcon", "Kestrel", "Osprey", "Condor", "Raptor", "Gargoyle",
+    "Goliath", "Titan", "Atlas", "Odin", "Thor", "Loki", "Freya", "Valkyrie", "Banshee", "Wraith",
+    "Spectre", "Phantom", "Shadow", "Shade", "Echo", "Whisper", "Silence", "Static", "Glitch", "Spark",
+    "Surge", "Volt", "Amp", "Circuit", "Wire", "Fuse", "Breaker", "Anvil", "Hammer", "Forge",
+    "Iron", "Steel", "Rust", "Scrap", "Junk", "Wreck", "Ruin", "Havoc", "Chaos", "Mayhem",
+    "Riot", "Rebel", "Rogue", "Nomad", "Drifter", "Ronin", "Samurai", "Ninja", "Shinobi", "Monk",
+    "Priest", "Bishop", "Knight", "Rook", "Pawn", "King", "Queen", "Joker", "Ace", "Spade",
+    "Club", "Heart", "Diamond", "Jack", "Deuce", "Wild", "Bluff", "Tell", "Fold", "Call",
+    "Raise", "Bust", "Snake", "Eyes", "Boxcar", "Seven", "Eleven", "Lucky", "Chance", "Fate",
+    "Destiny", "Karma", "Doom", "Gloom", "Blight", "Plague", "Toxin", "Venom", "Poison", "Acid",
+    "Burn", "Scorch", "Blaze", "Inferno", "Ember", "Ash", "Cinder", "Smoke", "Soot", "Coal",
+    "Flint", "Stone", "Rock", "Boulder", "Crag", "Cliff", "Peak", "Summit", "Apex", "Zenith",
+    "Nadir", "Abyss", "Void", "Null", "Zero", "One", "Binary", "Cipher", "Code", "Data",
+    "Byte", "Bit", "Pixel", "Voxel", "Render", "Ping", "Lag", "Drop", "Crash", "Reboot"
+  ];
+
   let state = {
+    companyName: "Alpha Strike Hot Drops",
     sp: 400,
     unitA: [
       { id: "p1", isNamed: true, pilot: "Alpha One", mech: "Chassis", pv: 35, skill: 3, gunnery: 3, piloting: 4, edgeMax: 2, edgeCurrent: 2, edgeAbilitiesCount: 1, role: "Striker", abilities: "None", spBank: 150, status: "OK", participated: true },
@@ -412,6 +481,11 @@
       { id: "p5", isNamed: false, pilot: "Recruit 2", mech: "Chassis", pv: 20, skill: 4, gunnery: 4, piloting: 5, edgeMax: 1, edgeCurrent: 1, edgeAbilitiesCount: 0, role: "Scout", abilities: "None", spBank: 0, status: "OK", participated: false }
     ]
   };
+
+  function updateCompanyName(val) {
+    state.companyName = val || "Alpha Strike Hot Drops";
+    saveState();
+  }
 
   // Menu Dropdown Logic
   function toggleMenu() {
@@ -440,8 +514,10 @@
             if (u.participated === undefined) u.participated = true;
           });
         });
+        if (!state.companyName) state.companyName = "Alpha Strike Hot Drops";
       } catch(e) { console.error(e); }
     }
+    document.getElementById('companyNameInput').value = state.companyName;
     renderRoster();
     renderTraining();
     populateMVPList();
@@ -479,13 +555,40 @@
     document.getElementById(tabId).classList.add('active');
   }
 
+  /* REORDER AND TRANSFER ENGINE */
+  function moveUnitUp(lance, idx) {
+    if (idx === 0) return;
+    const list = lance === 'A' ? state.unitA : state.unitB;
+    const temp = list[idx - 1];
+    list[idx - 1] = list[idx];
+    list[idx] = temp;
+    saveState();
+  }
+
+  function moveUnitDown(lance, idx) {
+    const list = lance === 'A' ? state.unitA : state.unitB;
+    if (idx === list.length - 1) return;
+    const temp = list[idx + 1];
+    list[idx + 1] = list[idx];
+    list[idx] = temp;
+    saveState();
+  }
+
+  function transferUnit(lance, idx) {
+    const sourceList = lance === 'A' ? state.unitA : state.unitB;
+    const targetList = lance === 'A' ? state.unitB : state.unitA;
+    const unit = sourceList.splice(idx, 1)[0];
+    targetList.push(unit);
+    saveState();
+  }
+
   function renderRoster() {
     ['A', 'B'].forEach(lance => {
       const list = lance === 'A' ? state.unitA : state.unitB;
       const container = document.getElementById(`unit${lance}List`);
       let pvTotal = 0;
       
-      let html = '<div class="table-responsive"><table><thead><tr><th style="width:1%;">TYPE</th><th>CALLSIGN</th><th>CHASSIS</th><th style="text-align:center;">DEPLOY</th><th style="text-align:center;">PV</th><th style="text-align:center;">SKILL</th><th style="text-align:center;">EDGE</th><th>STATUS</th><th></th></tr></thead><tbody>';
+      let html = '<div class="table-responsive"><table><thead><tr><th style="width:1%;">TYPE</th><th>CALLSIGN</th><th>CHASSIS</th><th style="text-align:center;">DEPLOY</th><th style="text-align:center;">PV</th><th style="text-align:center;">SKILL</th><th style="text-align:center;">EDGE</th><th>STATUS</th><th style="text-align:center;">ACTIONS</th></tr></thead><tbody>';
       
       list.forEach((item, idx) => {
         pvTotal += parseInt(item.pv) || 0;
@@ -496,8 +599,13 @@
                 ${item.isNamed ? 'NAMED' : 'RECRUIT'}
               </span>
             </td>
-            <td><input class="table-input callsign-input" value="${item.pilot}" maxlength="20" onchange="updateUnit('${lance}', ${idx}, 'pilot', this.value)"></td>
-            <td><input class="table-input" style="min-width:100px;" value="${item.mech}" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
+            <td>
+              <div class="input-with-dice">
+                <input class="table-input callsign-input" value="${item.pilot}" maxlength="20" onchange="updateUnit('${lance}', ${idx}, 'pilot', this.value)">
+                <button class="btn-grey btn-sm" style="padding:4px 6px;" title="Roll New Name" onclick="randomizeCallsign('${lance}', ${idx})">🎲</button>
+              </div>
+            </td>
+            <td><input list="mech-list" class="table-input" style="min-width:100px;" value="${item.mech}" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
             <td style="text-align:center;">
               <input type="checkbox" ${item.participated ? 'checked' : ''} onchange="updateUnit('${lance}', ${idx}, 'participated', this.checked)">
             </td>
@@ -512,14 +620,35 @@
                 <option value="KIA" ${item.status==='KIA'?'selected':''}>KIA</option>
               </select>
             </td>
-            <td><button class="btn btn-danger btn-sm" style="padding: 6px 10px;" onclick="removeUnit('${lance}', ${idx})">X</button></td>
+            <td style="text-align:center;">
+              <div class="action-group">
+                <button class="btn-grey btn-sm" style="padding: 4px 8px;" onclick="moveUnitUp('${lance}', ${idx})" title="Move Up">▲</button>
+                <button class="btn-grey btn-sm" style="padding: 4px 8px;" onclick="moveUnitDown('${lance}', ${idx})" title="Move Down">▼</button>
+                <button class="btn-grey btn-sm" style="padding: 4px 8px;" onclick="transferUnit('${lance}', ${idx})" title="Transfer to other Unit">⇆</button>
+                <button class="btn-danger btn-sm" style="padding: 4px 8px;" onclick="removeUnit('${lance}', ${idx})" title="Delete">X</button>
+              </div>
+            </td>
           </tr>
         `;
       });
       html += '</tbody></table></div>';
       container.innerHTML = html;
-      document.getElementById(`unit${lance}PVSum`).textContent = `${pvTotal} / 200 PV`;
+      
+      const badge = document.getElementById(`unit${lance}PVSum`);
+      badge.textContent = `${pvTotal} / 200 PV`;
+      if (pvTotal > 200) {
+        badge.classList.add('blink-red');
+      } else {
+        badge.classList.remove('blink-red');
+      }
     });
+  }
+
+  function randomizeCallsign(lance, idx) {
+    const list = lance === 'A' ? state.unitA : state.unitB;
+    const newName = callsigns[Math.floor(Math.random() * callsigns.length)];
+    list[idx].pilot = newName;
+    saveState();
   }
 
   function renderTraining() {
@@ -566,9 +695,9 @@
                 </button>
               </div>
               <div>
-                <label>ABILITIES (${item.edgeAbilitiesCount})</label>
+                <label>SPA (${item.edgeAbilitiesCount})</label>
                 <button class="btn-train" ${!abilityCost || item.spBank < abilityCost ? 'disabled' : ''} onclick="buyEdgeAbility('${lance}', ${idx})">
-                  ${abilityCost ? `+1 ABL (${abilityCost} SP)` : 'MAX (5)'}
+                  ${abilityCost ? `+1 SPA (${abilityCost} SP)` : 'MAX (5)'}
                 </button>
               </div>
             </div>
@@ -587,7 +716,7 @@
                 <input type="text" value="${item.role || ''}" placeholder="e.g. Brawler" onchange="updateUnit('${lance}', ${idx}, 'role', this.value)">
               </div>
               <div>
-                <label>SPECIAL ABILITIES</label>
+                <label>SPA LIST</label>
                 <input type="text" value="${item.abilities || ''}" placeholder="e.g. Sniper" onchange="updateUnit('${lance}', ${idx}, 'abilities', this.value)">
               </div>
             </div>
@@ -599,16 +728,23 @@
   }
 
   function resetPilotStats(lance, idx) {
-    if(confirm("Are you sure you want to wipe and reset this pilot's stats? (Skill 4, Edge 1, 0 Abilities). SP spent previously will NOT be refunded automatically.")) {
-      const p = (lance === 'A' ? state.unitA : state.unitB)[idx];
+    const list = lance === 'A' ? state.unitA : state.unitB;
+    const p = list[idx];
+
+    let refund = 0;
+    for (let s = 3; s >= p.skill; s--) if (SKILL_COSTS[s]) refund += SKILL_COSTS[s];
+    for (let e = 2; e <= p.edgeMax; e++) if (EDGE_TOKEN_COSTS[e]) refund += EDGE_TOKEN_COSTS[e];
+    for (let a = 1; a <= p.edgeAbilitiesCount; a++) if (EDGE_ABILITY_COSTS[a]) refund += EDGE_ABILITY_COSTS[a];
+
+    if(confirm(`Are you sure you want to wipe and reset ${p.pilot}'s stats back to baseline? (Skill 4, Edge 1, 0 SPA).\n\nNOTE: ${refund} SP previously spent on upgrades will be fully refunded into the central Company Warchest.`)) {
+      state.sp += refund;
       p.skill = 4;
-      p.gunnery = 4;
-      p.piloting = 5;
       p.edgeMax = 1;
       p.edgeCurrent = 1;
       p.edgeAbilitiesCount = 0;
       p.abilities = "None";
       saveState();
+      alert(`> STATS RESET COMPLETE. +${refund} SP deposited to Warchest.`);
     }
   }
 
@@ -647,7 +783,7 @@
     const nextAbility = p.edgeAbilitiesCount + 1;
     const cost = EDGE_ABILITY_COSTS[nextAbility];
     if (cost && p.spBank >= cost) {
-      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to purchase Edge Ability slot #${nextAbility}?`)) {
+      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to purchase SPA slot #${nextAbility}?`)) {
         p.spBank -= cost;
         p.edgeAbilitiesCount = nextAbility;
         saveState();
@@ -719,30 +855,34 @@
       alert("INSUFFICIENT FUNDS: Recruiting a new pilot costs 150 SP.");
       return;
     }
-    const name = prompt("Enter new Named Pilot's callsign:", "Rookie");
+
+    const randomDefault = callsigns[Math.floor(Math.random() * callsigns.length)];
+    const name = prompt("Enter new Named Pilot's callsign:", randomDefault);
     if (!name) return;
 
-    state.sp -= 150;
-    state.unitA.push({
-      id: "p_" + Date.now(),
-      isNamed: true,
-      pilot: name,
-      mech: "Unassigned",
-      pv: 0,
-      skill: 4,
-      gunnery: 4,
-      piloting: 5,
-      edgeMax: 1,
-      edgeCurrent: 1,
-      edgeAbilitiesCount: 0,
-      role: "Recruit",
-      abilities: "None",
-      spBank: 150,
-      status: "OK",
-      participated: true
-    });
-    saveState();
-    alert(`> RECRUIT ${name} AUTHORIZED. 150 SP DEDUCTED. (Pilot received 150 SP starting bank).`);
+    if (confirm(`Authorize deployment of ${name} to active duty for 150 SP?`)) {
+      state.sp -= 150;
+      state.unitA.push({
+        id: "p_" + Date.now(),
+        isNamed: true,
+        pilot: name,
+        mech: "Unassigned",
+        pv: 0,
+        skill: 4,
+        gunnery: 4,
+        piloting: 5,
+        edgeMax: 1,
+        edgeCurrent: 1,
+        edgeAbilitiesCount: 0,
+        role: "Recruit",
+        abilities: "None",
+        spBank: 150,
+        status: "OK",
+        participated: true
+      });
+      saveState();
+      alert(`> RECRUIT ${name} AUTHORIZED. 150 SP DEDUCTED. (Pilot received 150 SP starting bank).`);
+    }
   }
 
   /* REPAIR ENGINE */
@@ -897,28 +1037,30 @@
       alert(`INSUFFICIENT WARCHEST SP. COST IS ${cost} SP.`);
       return;
     }
-    state.sp -= cost;
-    const list = lance === 'A' ? state.unitA : state.unitB;
-    list.push({
-      id: "p_" + Date.now(),
-      isNamed: false,
-      pilot: "Recruit",
-      mech: name,
-      pv: pv,
-      skill: 4,
-      gunnery: 4,
-      piloting: 5,
-      edgeMax: 1,
-      edgeCurrent: 1,
-      edgeAbilitiesCount: 0,
-      role: "Trooper",
-      abilities: "None",
-      spBank: 0,
-      status: "OK",
-      participated: true
-    });
-    saveState();
-    alert(`> REQUISITION APPROVED. ${name} SECURED FOR ${cost} SP.`);
+    if (confirm(`Authorize the requisition of ${name} (PV: ${pv}) for ${cost} SP?`)) {
+      state.sp -= cost;
+      const list = lance === 'A' ? state.unitA : state.unitB;
+      list.push({
+        id: "p_" + Date.now(),
+        isNamed: false,
+        pilot: "Recruit",
+        mech: name,
+        pv: pv,
+        skill: 4,
+        gunnery: 4,
+        piloting: 5,
+        edgeMax: 1,
+        edgeCurrent: 1,
+        edgeAbilitiesCount: 0,
+        role: "Trooper",
+        abilities: "None",
+        spBank: 0,
+        status: "OK",
+        participated: true
+      });
+      saveState();
+      alert(`> REQUISITION APPROVED. ${name} SECURED FOR ${cost} SP.`);
+    }
   }
 
   /* 2D6 ENGINE */
