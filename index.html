@@ -81,6 +81,7 @@
     margin-bottom: 2px;
   }
   .company-title-input:focus { outline: none; border-bottom: 2px solid var(--red-base); }
+  .company-title-input::placeholder { color: #525252; font-size: 1.4rem; }
 
   /* Dropdown Menu Setup */
   .dropdown { position: relative; display: inline-block; }
@@ -211,28 +212,8 @@
 </head>
 <body>
 
-<!-- Auto-Complete Database (Invisible) -->
-<datalist id="mech-list">
-  <option value="Locust LCT-1V"><option value="Wasp WSP-1A"><option value="Stinger STG-3R">
-  <option value="Commando COM-2D"><option value="Valkyrie VLK-QA"><option value="Spider SDR-5V">
-  <option value="Firestarter FS9-H"><option value="Jenner JR7-D"><option value="Panther PNT-9R">
-  <option value="Raven RVN-1X"><option value="Assassin ASN-21"><option value="Cicada CDA-2A">
-  <option value="Clint CLNT-2-3T"><option value="Hermes II HER-2S"><option value="Vulcan VTC-2T">
-  <option value="Whitworth WTH-1"><option value="Blackjack BJ-1"><option value="Hatchetman HCT-3F">
-  <option value="Phoenix Hawk PXH-1"><option value="Vindicator VND-1R"><option value="Centurion CN9-A">
-  <option value="Enforcer ENF-4R"><option value="Hunchback HBK-4G"><option value="Trebuchet TBT-5N">
-  <option value="Dervish DV-6M"><option value="Griffin GRF-1N"><option value="Shadow Hawk SHD-2H">
-  <option value="Wolverine WVR-6R"><option value="Dragon DRG-1N"><option value="Ostroc OSR-2C">
-  <option value="Ostsol OTL-4D"><option value="Quickdraw QKD-4G"><option value="Catapult CPLT-C1">
-  <option value="JagerMech JM6-S"><option value="Thunderbolt TDR-5S"><option value="Archer ARC-2R">
-  <option value="Cataphract CTF-1X"><option value="Grasshopper GHR-5H"><option value="Orion ON1-K">
-  <option value="Awesome AWS-8Q"><option value="Charger CGR-1A1"><option value="Goliath GOL-1H">
-  <option value="Victor VTR-9B"><option value="Zeus ZEU-6S"><option value="BattleMaster BLR-1G">
-  <option value="Stalker STK-3F"><option value="Cyclops CP-10-Z"><option value="Highlander HGN-732">
-  <option value="Banshee BNC-3E"><option value="Atlas AS7-D"><option value="King Crab KGC-0000">
-  <option value="Timber Wolf (Mad Cat)"><option value="Dire Wolf (Daishi)"><option value="Stormcrow (Ryoken)">
-  <option value="Hellbringer (Loki)"><option value="Summoner (Thor)"><option value="Mad Dog (Vulture)">
-</datalist>
+<!-- Dynamic MUL Database Target (Invisible) -->
+<datalist id="mul-search-results"></datalist>
 
 <div class="container">
   <header>
@@ -247,7 +228,8 @@
         </div>
       </div>
       <div style="flex-grow: 1;">
-        <input type="text" id="companyNameInput" class="company-title-input" onchange="updateCompanyName(this.value)">
+        <!-- EDITABLE COMPANY NAME -->
+        <input type="text" id="companyNameInput" class="company-title-input" placeholder="e.g. Court of Fools" onchange="updateCompanyName(this.value)">
         <small style="color:var(--text-muted); font-size: 0.95rem; font-weight: 600; display:block;">Tactical Pilot &amp; Sortie Tracker</small>
       </div>
     </div>
@@ -311,14 +293,38 @@
       <!-- Mission Outcome -->
       <div class="card">
         <h2>1. MISSION INCOME</h2>
+        
+        <div class="form-group">
+          <label>Optional: Scale Payout (Win/Defeat)</label>
+          <select id="scalePayoutPreset" onchange="applyScalePayout()">
+            <option value="0">-- Custom Manual Entry --</option>
+            <option value="500">Scale 1 (100 PV) - Win (500 SP)</option>
+            <option value="250">Scale 1 (100 PV) - Defeat (250 SP)</option>
+            <option value="1000">Scale 2 (200 PV) - Win (1000 SP)</option>
+            <option value="500">Scale 2 (200 PV) - Defeat (500 SP)</option>
+            <option value="1500">Scale 3 (300 PV) - Win (1500 SP)</option>
+            <option value="750">Scale 3 (300 PV) - Defeat (750 SP)</option>
+            <option value="2000">Scale 4 (400 PV) - Win (2000 SP)</option>
+            <option value="1000">Scale 4 (400 PV) - Defeat (1000 SP)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Base Scenario Reward (SP)</label>
+          <input type="number" id="baseSP" value="0" min="0" oninput="resetScaleDropdown(); calcIncome();">
+        </div>
+
         <div class="form-group">
           <label>Bonus Objectives SP</label>
           <input type="number" id="bonusSP" value="0" min="0" oninput="calcIncome()">
+          <small style="color:var(--text-muted); font-size:0.85rem; font-weight: 600; display:block; margin-top:4px;">* Note to players: On average, completing objectives will earn 150 SP.</small>
         </div>
+
         <div class="form-group">
           <label>Enemies Fully Destroyed (Scrap @ +5 SP)</label>
           <input type="number" id="destroyedEnemies" value="0" min="0" oninput="calcIncome()">
         </div>
+        
         <p style="font-family:'Russo One'; font-size:1.3rem; margin-top:10px;">
           COMPANY EARNINGS: <span id="earnedSPTotal" style="color:#22c55e;">0</span> SP
         </p>
@@ -405,7 +411,7 @@
         <h2>REQUISITIONS &amp; RECRUITMENT</h2>
         <div class="form-group">
           <label>CHASSIS DESIGNATION</label>
-          <input type="text" id="buyName" list="mech-list" placeholder="e.g. Warhammer WHM-6R">
+          <input type="text" id="buyName" list="mul-search-results" placeholder="e.g. Warhammer WHM-6R" oninput="handleMechInput(this, null, null)">
         </div>
         <div class="form-group">
           <label>ALPHA STRIKE PV</label>
@@ -449,6 +455,65 @@
   const EDGE_TOKEN_COSTS = { 2: 60, 3: 120, 4: 200, 5: 300, 6: 420, 7: 560, 8: 720, 9: 900, 10: 1100 };
   const EDGE_ABILITY_COSTS = { 1: 60, 2: 180, 3: 360, 4: 600, 5: 900 };
 
+  // LIVE MASTER UNIT LIST LOGIC
+  let mulCache = {};
+  let searchTimeout;
+
+  async function searchMUL(query) {
+    if (!query || query.length < 3) return;
+    
+    // Connect to official BATTLETECH MUL via CORS Proxy
+    const targetUrl = `http://www.masterunitlist.info/Unit/QuickList?Name=${encodeURIComponent(query)}`;
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+    try {
+      const res = await fetch(proxyUrl);
+      const data = await res.json();
+      const list = document.getElementById('mul-search-results');
+      list.innerHTML = ''; 
+      
+      if (data && data.Units) {
+        data.Units.forEach(unit => {
+          const name = unit.Name;
+          const pv = parseInt(unit.BFPointValue) || 0;
+          mulCache[name] = pv;
+          
+          const opt = document.createElement('option');
+          opt.value = name;
+          list.appendChild(opt);
+        });
+      }
+    } catch (err) {
+      console.error("MUL Live Search Error:", err);
+    }
+  }
+
+  function handleMechInput(inputElem, lance, idx) {
+    const val = inputElem.value;
+    
+    // Check if the user selected a fully loaded unit from the list
+    if (mulCache[val] !== undefined) {
+      const pv = mulCache[val];
+      if (lance) { // Automatically assign Roster PV and update DOM directly without redrawing table (preserves cursor focus)
+        const target = lance === 'A' ? state.unitA : state.unitB;
+        target[idx].mech = val;
+        target[idx].pv = pv;
+        document.getElementById(`pv_${lance}_${idx}`).value = pv;
+        localStorage.setItem('bt_aces_v3_tactical', JSON.stringify(state));
+        updatePVSums();
+      } else { // Automatically assign Market PV
+        document.getElementById('buyPV').value = pv;
+        calcBuyCost();
+      }
+    } else {
+      // User is still typing. Debounce for 400ms then query MUL
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchMUL(val);
+      }, 400);
+    }
+  }
+
   // 150 Embedded Sci-Fi/Mercenary Callsigns for Quick Hiring
   const callsigns = [
     "Viper", "Ghost", "Maverick", "Jester", "Iceman", "Goose", "Merlin", "Sundown", "Wolf", "Hound",
@@ -469,7 +534,7 @@
   ];
 
   let state = {
-    companyName: "Alpha Strike Hot Drops",
+    companyName: "",
     sp: 400,
     unitA: [
       { id: "p1", isNamed: true, pilot: "Alpha One", mech: "Chassis", pv: 35, skill: 3, gunnery: 3, piloting: 4, edgeMax: 2, edgeCurrent: 2, edgeAbilitiesCount: 1, role: "Striker", abilities: "None", spBank: 150, status: "OK", participated: true },
@@ -483,11 +548,10 @@
   };
 
   function updateCompanyName(val) {
-    state.companyName = val || "Alpha Strike Hot Drops";
+    state.companyName = val || "";
     saveState();
   }
 
-  // Menu Dropdown Logic
   function toggleMenu() {
     document.getElementById("myDropdown").classList.toggle("show");
   }
@@ -508,16 +572,16 @@
     if (saved) {
       try { 
         state = JSON.parse(saved); 
-        // Sync older state formats with new fields
         ['unitA', 'unitB'].forEach(lanceKey => {
           state[lanceKey].forEach(u => {
             if (u.participated === undefined) u.participated = true;
           });
         });
-        if (!state.companyName) state.companyName = "Alpha Strike Hot Drops";
       } catch(e) { console.error(e); }
     }
-    document.getElementById('companyNameInput').value = state.companyName;
+    if (state.companyName) {
+        document.getElementById('companyNameInput').value = state.companyName;
+    }
     renderRoster();
     renderTraining();
     populateMVPList();
@@ -555,7 +619,6 @@
     document.getElementById(tabId).classList.add('active');
   }
 
-  /* REORDER AND TRANSFER ENGINE */
   function moveUnitUp(lance, idx) {
     if (idx === 0) return;
     const list = lance === 'A' ? state.unitA : state.unitB;
@@ -582,16 +645,26 @@
     saveState();
   }
 
+  function updatePVSums() {
+    ['A', 'B'].forEach(lance => {
+      const list = lance === 'A' ? state.unitA : state.unitB;
+      let pvTotal = 0;
+      list.forEach(item => pvTotal += parseInt(item.pv) || 0);
+      const badge = document.getElementById(`unit${lance}PVSum`);
+      badge.textContent = `${pvTotal} / 200 PV`;
+      if (pvTotal > 200) badge.classList.add('blink-red');
+      else badge.classList.remove('blink-red');
+    });
+  }
+
   function renderRoster() {
     ['A', 'B'].forEach(lance => {
       const list = lance === 'A' ? state.unitA : state.unitB;
       const container = document.getElementById(`unit${lance}List`);
-      let pvTotal = 0;
       
       let html = '<div class="table-responsive"><table><thead><tr><th style="width:1%;">TYPE</th><th>CALLSIGN</th><th>CHASSIS</th><th style="text-align:center;">DEPLOY</th><th style="text-align:center;">PV</th><th style="text-align:center;">SKILL</th><th style="text-align:center;">EDGE</th><th>STATUS</th><th style="text-align:center;">ACTIONS</th></tr></thead><tbody>';
       
       list.forEach((item, idx) => {
-        pvTotal += parseInt(item.pv) || 0;
         html += `
           <tr>
             <td>
@@ -605,11 +678,11 @@
                 <button class="btn-grey btn-sm" style="padding:4px 6px;" title="Roll New Name" onclick="randomizeCallsign('${lance}', ${idx})">🎲</button>
               </div>
             </td>
-            <td><input list="mech-list" class="table-input" style="min-width:100px;" value="${item.mech}" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
+            <td><input list="mul-search-results" class="table-input" style="min-width:100px;" value="${item.mech}" oninput="handleMechInput(this, '${lance}', ${idx})" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
             <td style="text-align:center;">
               <input type="checkbox" ${item.participated ? 'checked' : ''} onchange="updateUnit('${lance}', ${idx}, 'participated', this.checked)">
             </td>
-            <td><input class="table-input table-input-num" type="number" value="${item.pv}" onchange="updateUnit('${lance}', ${idx}, 'pv', this.value)"></td>
+            <td><input id="pv_${lance}_${idx}" class="table-input table-input-num" type="number" value="${item.pv}" onchange="updateUnit('${lance}', ${idx}, 'pv', this.value)"></td>
             <td style="text-align:center; font-weight:bold;">${item.skill}</td>
             <td style="text-align:center;"><span class="badge-edge">${item.edgeCurrent}/${item.edgeMax}</span></td>
             <td>
@@ -633,15 +706,8 @@
       });
       html += '</tbody></table></div>';
       container.innerHTML = html;
-      
-      const badge = document.getElementById(`unit${lance}PVSum`);
-      badge.textContent = `${pvTotal} / 200 PV`;
-      if (pvTotal > 200) {
-        badge.classList.add('blink-red');
-      } else {
-        badge.classList.remove('blink-red');
-      }
     });
+    updatePVSums();
   }
 
   function randomizeCallsign(lance, idx) {
@@ -962,10 +1028,23 @@
   }
 
   /* POST SORTIE INCOME & DISTRIBUTION */
+  function applyScalePayout() {
+    const presetVal = parseInt(document.getElementById('scalePayoutPreset').value) || 0;
+    if (presetVal > 0) {
+      document.getElementById('baseSP').value = presetVal;
+    }
+    calcIncome();
+  }
+
+  function resetScaleDropdown() {
+    document.getElementById('scalePayoutPreset').value = "0";
+  }
+
   function calcIncome() {
+    const base = parseInt(document.getElementById('baseSP').value) || 0;
     const bonus = parseInt(document.getElementById('bonusSP').value) || 0;
     const kills = (parseInt(document.getElementById('destroyedEnemies').value) || 0) * 5;
-    const total = bonus + kills;
+    const total = base + bonus + kills;
     document.getElementById('earnedSPTotal').textContent = total;
     return total;
   }
