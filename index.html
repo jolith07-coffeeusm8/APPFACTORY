@@ -211,28 +211,8 @@
 </head>
 <body>
 
-<!-- Auto-Complete Database (Invisible) -->
-<datalist id="mech-list">
-  <option value="Locust LCT-1V"><option value="Wasp WSP-1A"><option value="Stinger STG-3R">
-  <option value="Commando COM-2D"><option value="Valkyrie VLK-QA"><option value="Spider SDR-5V">
-  <option value="Firestarter FS9-H"><option value="Jenner JR7-D"><option value="Panther PNT-9R">
-  <option value="Raven RVN-1X"><option value="Assassin ASN-21"><option value="Cicada CDA-2A">
-  <option value="Clint CLNT-2-3T"><option value="Hermes II HER-2S"><option value="Vulcan VTC-2T">
-  <option value="Whitworth WTH-1"><option value="Blackjack BJ-1"><option value="Hatchetman HCT-3F">
-  <option value="Phoenix Hawk PXH-1"><option value="Vindicator VND-1R"><option value="Centurion CN9-A">
-  <option value="Enforcer ENF-4R"><option value="Hunchback HBK-4G"><option value="Trebuchet TBT-5N">
-  <option value="Dervish DV-6M"><option value="Griffin GRF-1N"><option value="Shadow Hawk SHD-2H">
-  <option value="Wolverine WVR-6R"><option value="Dragon DRG-1N"><option value="Ostroc OSR-2C">
-  <option value="Ostsol OTL-4D"><option value="Quickdraw QKD-4G"><option value="Catapult CPLT-C1">
-  <option value="JagerMech JM6-S"><option value="Thunderbolt TDR-5S"><option value="Archer ARC-2R">
-  <option value="Cataphract CTF-1X"><option value="Grasshopper GHR-5H"><option value="Orion ON1-K">
-  <option value="Awesome AWS-8Q"><option value="Charger CGR-1A1"><option value="Goliath GOL-1H">
-  <option value="Victor VTR-9B"><option value="Zeus ZEU-6S"><option value="BattleMaster BLR-1G">
-  <option value="Stalker STK-3F"><option value="Cyclops CP-10-Z"><option value="Highlander HGN-732">
-  <option value="Banshee BNC-3E"><option value="Atlas AS7-D"><option value="King Crab KGC-0000">
-  <option value="Timber Wolf (Mad Cat)"><option value="Dire Wolf (Daishi)"><option value="Stormcrow (Ryoken)">
-  <option value="Hellbringer (Loki)"><option value="Summoner (Thor)"><option value="Mad Dog (Vulture)">
-</datalist>
+<!-- Dynamic MUL Database Target (Invisible) -->
+<datalist id="mul-search-results"></datalist>
 
 <div class="container">
   <header>
@@ -244,10 +224,12 @@
           <button onclick="switchTab('trainingTab')">Pilot Academy &amp; Skills</button>
           <button onclick="switchTab('upkeepTab')">Post-Sortie Upkeep</button>
           <button onclick="switchTab('marketTab')">Requisitions &amp; Dice</button>
+          <button onclick="switchTab('hotSpotsTab')">Hot Spots Campaign</button>
         </div>
       </div>
       <div style="flex-grow: 1;">
-        <input type="text" id="companyNameInput" class="company-title-input" onchange="updateCompanyName(this.value)">
+        <!-- EDITABLE COMPANY NAME -->
+        <input type="text" id="companyNameInput" class="company-title-input" placeholder="e.g. Court of Fools" onchange="updateCompanyName(this.value)">
         <small style="color:var(--text-muted); font-size: 0.95rem; font-weight: 600; display:block;">Tactical Pilot &amp; Sortie Tracker</small>
       </div>
     </div>
@@ -342,19 +324,53 @@
   <!-- PANEL 3: POST-SORTIE UPKEEP & REPAIRS -->
   <div id="upkeepTab" class="panel">
     <div class="grid">
-      <!-- Mission Outcome -->
+      <!-- Mission Ledger -->
       <div class="card">
-        <h2>1. MISSION INCOME</h2>
+        <h2>1. MISSION LEDGER</h2>
+        
+        <h3 style="margin-top:10px; margin-bottom:8px; font-size:1.05rem; color:var(--white-accent);">INCOME (SP)</h3>
         <div class="form-group">
-          <label>Bonus Objectives SP</label>
-          <input type="number" id="bonusSP" value="0" min="0" oninput="calcIncome()">
+          <label>Optional: Scale Payout (Win/Defeat)</label>
+          <select id="scalePayoutPreset" onchange="applyScalePayout()">
+            <option value="0">-- Custom Manual Entry --</option>
+            <option value="500">Scale 1 (100 PV) - Win (500 SP)</option>
+            <option value="250">Scale 1 (100 PV) - Defeat (250 SP)</option>
+            <option value="1000">Scale 2 (200 PV) - Win (1000 SP)</option>
+            <option value="500">Scale 2 (200 PV) - Defeat (500 SP)</option>
+            <option value="1500">Scale 3 (300 PV) - Win (1500 SP)</option>
+            <option value="750">Scale 3 (300 PV) - Defeat (750 SP)</option>
+            <option value="2000">Scale 4 (400 PV) - Win (2000 SP)</option>
+            <option value="1000">Scale 4 (400 PV) - Defeat (1000 SP)</option>
+          </select>
         </div>
+
+        <div class="form-group">
+          <label>Primary Objectives SP</label>
+          <input type="number" id="baseSP" value="0" oninput="resetScaleDropdown(); calcIncome();">
+        </div>
+
+        <div class="form-group">
+          <label>Secondary Objectives SP</label>
+          <input type="number" id="bonusSP" value="0" oninput="calcIncome()">
+        </div>
+
         <div class="form-group">
           <label>Enemies Fully Destroyed (Scrap @ +5 SP)</label>
           <input type="number" id="destroyedEnemies" value="0" min="0" oninput="calcIncome()">
         </div>
-        <p style="font-family:'Russo One'; font-size:1.3rem; margin-top:10px;">
-          COMPANY EARNINGS: <span id="earnedSPTotal" style="color:#22c55e;">0</span> SP
+        
+        <h3 style="margin-top:24px; margin-bottom:8px; font-size:1.05rem; color:var(--white-accent);">EXPENSES (SP)</h3>
+        <div class="form-group">
+          <label>Reconnaissance</label>
+          <input type="number" id="reconExpense" value="0" min="0" oninput="calcIncome()">
+        </div>
+        <div class="form-group">
+          <label>Waypoints</label>
+          <input type="number" id="waypointExpense" value="0" min="0" oninput="calcIncome()">
+        </div>
+
+        <p style="font-family:'Russo One'; font-size:1.3rem; margin-top:20px;">
+          NET EARNINGS: <span id="earnedSPTotal" style="color:#22c55e;">0</span> SP
         </p>
 
         <h3 style="margin-top:24px; margin-bottom:8px; font-size:1.05rem; color:var(--white-accent);">PILOT SP POOL DISTRIBUTION</h3>
@@ -439,7 +455,7 @@
         <h2>REQUISITIONS &amp; RECRUITMENT</h2>
         <div class="form-group">
           <label>CHASSIS DESIGNATION</label>
-          <input type="text" id="buyName" list="mech-list" placeholder="e.g. Warhammer WHM-6R">
+          <input type="text" id="buyName" list="mul-search-results" placeholder="e.g. Warhammer WHM-6R" oninput="handleMechInput(this, null, null)">
         </div>
         <div class="form-group">
           <label>ALPHA STRIKE PV</label>
@@ -477,6 +493,14 @@
       </div>
     </div>
   </div>
+
+  <!-- PANEL 5: HOT SPOTS CAMPAIGN (UNDER CONSTRUCTION) -->
+  <div id="hotSpotsTab" class="panel">
+    <div class="card" style="text-align:center; padding:40px;">
+      <h2 style="justify-content:center; border:none; margin-bottom:10px;">HOT SPOTS CAMPAIGN</h2>
+      <p style="color:var(--text-muted); font-size:1.1rem; font-style:italic;">Commander! This sector is currently under construction. Awaiting further tactical data.</p>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -485,7 +509,63 @@
   const EDGE_TOKEN_COSTS = { 2: 60, 3: 120, 4: 200, 5: 300, 6: 420, 7: 560, 8: 720, 9: 900, 10: 1100 };
   const EDGE_ABILITY_COSTS = { 1: 60, 2: 180, 3: 360, 4: 600, 5: 900 };
 
-  // 150 Embedded Sci-Fi/Mercenary Callsigns for Quick Hiring
+  // LIVE MASTER UNIT LIST LOGIC
+  let mulCache = {};
+  let searchTimeout;
+
+  async function searchMUL(query) {
+    if (!query || query.length < 3) return;
+    
+    // Connect to official BATTLETECH MUL via CORS Proxy
+    const targetUrl = `http://www.masterunitlist.info/Unit/QuickList?Name=${encodeURIComponent(query)}`;
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+    try {
+      const res = await fetch(proxyUrl);
+      const data = await res.json();
+      const list = document.getElementById('mul-search-results');
+      list.innerHTML = ''; 
+      
+      if (data && data.Units) {
+        data.Units.forEach(unit => {
+          const name = unit.Name;
+          const pv = parseInt(unit.BFPointValue) || 0;
+          mulCache[name] = pv;
+          
+          const opt = document.createElement('option');
+          opt.value = name;
+          list.appendChild(opt);
+        });
+      }
+    } catch (err) {
+      console.error("MUL Live Search Error:", err);
+    }
+  }
+
+  function handleMechInput(inputElem, lance, idx) {
+    const val = inputElem.value;
+    
+    if (mulCache[val] !== undefined) {
+      const pv = mulCache[val];
+      if (lance) { 
+        const target = state[`unit${lance}`];
+        target[idx].mech = val;
+        target[idx].pv = pv;
+        document.getElementById(`pv_${lance}_${idx}`).value = pv;
+        localStorage.setItem('bt_aces_v3_tactical', JSON.stringify(state));
+        updatePVSums();
+      } else { 
+        document.getElementById('buyPV').value = pv;
+        calcBuyCost();
+      }
+    } else {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchMUL(val);
+      }, 400);
+    }
+  }
+
   const callsigns = [
     "Viper", "Ghost", "Maverick", "Jester", "Iceman", "Goose", "Merlin", "Sundown", "Wolf", "Hound",
     "Raven", "Crow", "Eagle", "Hawk", "Falcon", "Kestrel", "Osprey", "Condor", "Raptor", "Gargoyle",
@@ -525,7 +605,6 @@
     saveState();
   }
 
-  // Menu Dropdown Logic
   function toggleMenu() {
     document.getElementById("myDropdown").classList.toggle("show");
   }
@@ -546,17 +625,17 @@
     if (saved) {
       try { 
         state = JSON.parse(saved); 
-        // Sync older state formats with new fields
         ['unitA', 'unitB', 'unitC', 'unitD'].forEach(lanceKey => {
           if(!state[lanceKey]) state[lanceKey] = [];
           state[lanceKey].forEach(u => {
             if (u.participated === undefined) u.participated = true;
           });
         });
-        if (!state.companyName) state.companyName = "Alpha Strike Hot Drops";
       } catch(e) { console.error(e); }
     }
-    document.getElementById('companyNameInput').value = state.companyName;
+    if (state.companyName) {
+        document.getElementById('companyNameInput').value = state.companyName;
+    }
     renderRoster();
     renderTraining();
     populateMVPList();
@@ -582,7 +661,7 @@
   }
 
   function promptResetWarchest() {
-    const val = prompt("Enter new Company Warchest SP balance:", state.sp);
+    const val = prompt("Commander! This needs your attention.\n\nEnter new Company Warchest SP balance:", state.sp);
     if (val !== null) {
       state.sp = parseInt(val) || 0;
       saveState();
@@ -594,7 +673,6 @@
     document.getElementById(tabId).classList.add('active');
   }
 
-  /* REORDER AND TRANSFER ENGINE */
   function moveUnitUp(lance, idx) {
     if (idx === 0) return;
     const list = state[`unit${lance}`];
@@ -631,16 +709,28 @@
     saveState();
   }
 
+  function updatePVSums() {
+    ['A', 'B', 'C', 'D'].forEach(lance => {
+      const list = state[`unit${lance}`];
+      let pvTotal = 0;
+      list.forEach(item => pvTotal += parseInt(item.pv) || 0);
+      const badge = document.getElementById(`unit${lance}PVSum`);
+      if (badge) {
+        badge.textContent = `${pvTotal} / 200 PV`;
+        if (pvTotal > 200) badge.classList.add('blink-red');
+        else badge.classList.remove('blink-red');
+      }
+    });
+  }
+
   function renderRoster() {
     ['A', 'B', 'C', 'D'].forEach(lance => {
       const list = state[`unit${lance}`];
       const container = document.getElementById(`unit${lance}List`);
-      let pvTotal = 0;
       
       let html = '<div class="table-responsive"><table><thead><tr><th style="width:1%;">TYPE</th><th>CALLSIGN</th><th>CHASSIS</th><th style="text-align:center;">DEPLOY</th><th style="text-align:center;">PV</th><th style="text-align:center;">SKILL</th><th style="text-align:center;">EDGE</th><th>STATUS</th><th style="text-align:center;">ACTIONS</th></tr></thead><tbody>';
       
       list.forEach((item, idx) => {
-        pvTotal += parseInt(item.pv) || 0;
         html += `
           <tr>
             <td>
@@ -654,11 +744,11 @@
                 <button class="btn-grey btn-sm" style="padding:4px 6px;" title="Roll New Name" onclick="randomizeCallsign('${lance}', ${idx})">🎲</button>
               </div>
             </td>
-            <td><input list="mech-list" class="table-input" style="min-width:100px;" value="${item.mech}" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
+            <td><input list="mul-search-results" class="table-input" style="min-width:100px;" value="${item.mech}" oninput="handleMechInput(this, '${lance}', ${idx})" onchange="updateUnit('${lance}', ${idx}, 'mech', this.value)"></td>
             <td style="text-align:center;">
               <input type="checkbox" ${item.participated ? 'checked' : ''} onchange="updateUnit('${lance}', ${idx}, 'participated', this.checked)">
             </td>
-            <td><input class="table-input table-input-num" type="number" value="${item.pv}" onchange="updateUnit('${lance}', ${idx}, 'pv', this.value)"></td>
+            <td><input id="pv_${lance}_${idx}" class="table-input table-input-num" type="number" value="${item.pv}" onchange="updateUnit('${lance}', ${idx}, 'pv', this.value)"></td>
             <td style="text-align:center; font-weight:bold;">${item.skill}</td>
             <td style="text-align:center;"><span class="badge-edge">${item.edgeCurrent}/${item.edgeMax}</span></td>
             <td>
@@ -682,15 +772,8 @@
       });
       html += '</tbody></table></div>';
       container.innerHTML = html;
-      
-      const badge = document.getElementById(`unit${lance}PVSum`);
-      badge.textContent = `${pvTotal} / 200 PV`;
-      if (pvTotal > 200) {
-        badge.classList.add('blink-red');
-      } else {
-        badge.classList.remove('blink-red');
-      }
     });
+    updatePVSums();
   }
 
   function randomizeCallsign(lance, idx) {
@@ -785,7 +868,7 @@
     for (let e = 2; e <= p.edgeMax; e++) if (EDGE_TOKEN_COSTS[e]) refund += EDGE_TOKEN_COSTS[e];
     for (let a = 1; a <= p.edgeAbilitiesCount; a++) if (EDGE_ABILITY_COSTS[a]) refund += EDGE_ABILITY_COSTS[a];
 
-    if(confirm(`Are you sure you want to wipe and reset ${p.pilot}'s stats back to baseline? (Skill 4, Edge 1, 0 SPA).\n\nNOTE: ${refund} SP previously spent on upgrades will be fully refunded into the central Company Warchest.`)) {
+    if(confirm(`Commander! This needs your attention.\n\nAre you sure you want to wipe and reset ${p.pilot}'s stats back to baseline? (Skill 4, Edge 1, 0 SPA).\n\nNOTE: ${refund} SP previously spent on upgrades will be fully refunded into the central Company Warchest.`)) {
       state.sp += refund;
       p.skill = 4;
       p.edgeMax = 1;
@@ -803,7 +886,7 @@
     const nextSkill = p.skill - 1;
     const cost = SKILL_COSTS[nextSkill];
     if (cost && p.spBank >= cost) {
-      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to increase Skill to ${nextSkill}?`)) {
+      if (confirm(`Commander! This needs your attention.\n\nSpend ${cost} SP from ${p.pilot}'s personal bank to increase Skill to ${nextSkill}?`)) {
         p.spBank -= cost;
         p.skill = nextSkill;
         saveState();
@@ -817,7 +900,7 @@
     const nextEdge = p.edgeMax + 1;
     const cost = EDGE_TOKEN_COSTS[nextEdge];
     if (cost && p.spBank >= cost) {
-      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to buy Edge Token #${nextEdge}?`)) {
+      if (confirm(`Commander! This needs your attention.\n\nSpend ${cost} SP from ${p.pilot}'s personal bank to buy Edge Token #${nextEdge}?`)) {
         p.spBank -= cost;
         p.edgeMax = nextEdge;
         p.edgeCurrent = nextEdge;
@@ -832,7 +915,7 @@
     const nextAbility = p.edgeAbilitiesCount + 1;
     const cost = EDGE_ABILITY_COSTS[nextAbility];
     if (cost && p.spBank >= cost) {
-      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to purchase SPA slot #${nextAbility}?`)) {
+      if (confirm(`Commander! This needs your attention.\n\nSpend ${cost} SP from ${p.pilot}'s personal bank to purchase SPA slot #${nextAbility}?`)) {
         p.spBank -= cost;
         p.edgeAbilitiesCount = nextAbility;
         saveState();
@@ -860,7 +943,7 @@
   function addRosterUnit(lance, isNamed) {
     const totalNamed = [...state.unitA, ...state.unitB, ...state.unitC, ...state.unitD].filter(u => u.isNamed).length;
     if (isNamed && totalNamed >= 6) {
-      alert("COMMAND LIMIT ERROR: Maximum of 6 Named Pilots allowed across the company. Additional deployments must be Recruits.");
+      alert("Commander! This needs your attention.\n\nCOMMAND LIMIT ERROR: Maximum of 6 Named Pilots allowed across the company. Additional deployments must be Recruits.");
       return;
     }
 
@@ -887,7 +970,7 @@
   }
 
   function removeUnit(lance, idx) {
-    if (confirm("Are you sure you want to permanently delete this pilot and chassis from your roster?")) {
+    if (confirm("Commander! This needs your attention.\n\nAre you sure you want to permanently delete this pilot and chassis from your roster?")) {
       const list = state[`unit${lance}`];
       list.splice(idx, 1);
       saveState();
@@ -897,20 +980,16 @@
   function recruitNamedPilot() {
     const totalNamed = [...state.unitA, ...state.unitB, ...state.unitC, ...state.unitD].filter(u => u.isNamed).length;
     if (totalNamed >= 6) {
-      alert("COMMAND LIMIT ERROR: Maximum of 6 Named Pilots reached.");
-      return;
-    }
-    if (state.sp < 150) {
-      alert("INSUFFICIENT FUNDS: Recruiting a new pilot costs 150 SP.");
+      alert("Commander! This needs your attention.\n\nCOMMAND LIMIT ERROR: Maximum of 6 Named Pilots reached.");
       return;
     }
 
     const randomDefault = callsigns[Math.floor(Math.random() * callsigns.length)];
-    const name = prompt("Enter new Named Pilot's callsign:", randomDefault);
+    const name = prompt("Commander! This needs your attention.\n\nEnter new Named Pilot's callsign:", randomDefault);
     if (!name) return;
 
-    if (confirm(`Authorize deployment of ${name} to active duty for 150 SP?`)) {
-      state.sp -= 150;
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize deployment of ${name} to active duty for 150 SP?`)) {
+      state.sp -= 150; // Warchest goes negative naturally
       state.unitA.push({
         id: "p_" + Date.now(),
         isNamed: true,
@@ -954,11 +1033,7 @@
 
   function executeSingleRepair() {
     const cost = calcSingleRepairCost();
-    if (state.sp < cost) {
-      alert(`INSUFFICIENT SP! Repair requires ${cost} SP.`);
-      return;
-    }
-    if (confirm(`Authorize field repairs for ${cost} SP?`)) {
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize field repairs for ${cost} SP?`)) {
       state.sp -= cost;
       saveState();
       alert(`> LOGISTICS UPDATE: ${cost} SP deducted from company warchest.`);
@@ -968,15 +1043,11 @@
   function openMedicalDialog() {
     const wounded = [...state.unitA, ...state.unitB, ...state.unitC, ...state.unitD].filter(u => u.status === 'Wounded');
     if (wounded.length === 0) {
-      alert("NO WOUNDED PILOTS FOUND IN SYSTEM.");
-      return;
-    }
-    if (state.sp < 100) {
-      alert("INSUFFICIENT SP! Medical recovery costs 100 SP per pilot.");
+      alert("Commander! This needs your attention.\n\nNO WOUNDED PILOTS FOUND IN SYSTEM.");
       return;
     }
     const names = wounded.map((w, i) => `${i + 1}. ${w.pilot}`).join('\n');
-    const choice = prompt(`SELECT PILOT FOR MEDICAL TREATMENT (100 SP):\n${names}\nEnter ID number:`);
+    const choice = prompt(`Commander! This needs your attention.\n\nSELECT PILOT FOR MEDICAL TREATMENT (100 SP):\n${names}\nEnter ID number:`);
     const idx = parseInt(choice) - 1;
     if (wounded[idx]) {
       state.sp -= 100;
@@ -999,11 +1070,7 @@
 
   function executeOmniReconfig() {
     const cost = calcOmni();
-    if (state.sp < cost) {
-      alert(`INSUFFICIENT SP! Reconfiguration requires ${cost} SP.`);
-      return;
-    }
-    if (confirm(`Authorize OmniMech reconfiguration for ${cost} SP?`)) {
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize OmniMech reconfiguration for ${cost} SP?`)) {
       state.sp -= cost;
       saveState();
       alert(`> LOGISTICS UPDATE: OmniMech reconfigured. ${cost} SP deducted.`);
@@ -1011,11 +1078,35 @@
   }
 
   /* POST SORTIE INCOME & DISTRIBUTION */
+  function applyScalePayout() {
+    const presetVal = parseInt(document.getElementById('scalePayoutPreset').value) || 0;
+    if (presetVal > 0) {
+      document.getElementById('baseSP').value = presetVal;
+    }
+    calcIncome();
+  }
+
+  function resetScaleDropdown() {
+    document.getElementById('scalePayoutPreset').value = "0";
+  }
+
   function calcIncome() {
-    const bonus = parseInt(document.getElementById('bonusSP').value) || 0;
+    const primary = parseInt(document.getElementById('baseSP').value) || 0;
+    const secondary = parseInt(document.getElementById('bonusSP').value) || 0;
     const kills = (parseInt(document.getElementById('destroyedEnemies').value) || 0) * 5;
-    const total = bonus + kills;
-    document.getElementById('earnedSPTotal').textContent = total;
+    
+    const recon = parseInt(document.getElementById('reconExpense').value) || 0;
+    const waypoints = parseInt(document.getElementById('waypointExpense').value) || 0;
+
+    const total = (primary + secondary + kills) - (recon + waypoints);
+    
+    const earnedSpan = document.getElementById('earnedSPTotal');
+    earnedSpan.textContent = total;
+    if(total < 0) {
+        earnedSpan.style.color = "var(--red-hover)";
+    } else {
+        earnedSpan.style.color = "#22c55e";
+    }
     return total;
   }
 
@@ -1040,7 +1131,7 @@
     if (allNamed.length === 0) {
       state.sp += companyIncome;
       saveState();
-      alert(`> SORTIE CONCLUDED. +${companyIncome} SP DEPOSITED TO WARCHEST.`);
+      alert(`> SORTIE CONCLUDED. ${companyIncome >= 0 ? '+' : ''}${companyIncome} SP DEPOSITED TO WARCHEST.`);
       return;
     }
 
@@ -1051,7 +1142,7 @@
 
     const baseShare = Math.floor(pilotPool / totalWeights);
 
-    let summary = `> POST-SORTIE SETTLEMENT:\n- COMPANY EARNINGS: +${companyIncome} SP\n- PILOT DISTRIBUTION POOL: ${pilotPool} SP\n\nPILOT BANK DEPOSITS:\n`;
+    let summary = `> POST-SORTIE SETTLEMENT:\n- COMPANY NET EARNINGS: ${companyIncome >= 0 ? '+' : ''}${companyIncome} SP\n- PILOT DISTRIBUTION POOL: ${pilotPool} SP\n\nPILOT BANK DEPOSITS:\n`;
 
     allNamed.forEach(p => {
       let earned = Math.floor(baseShare * (p.participated ? 1.0 : 0.5));
@@ -1065,7 +1156,7 @@
       if (p.status === 'Sitting Out') p.status = 'OK';
     });
 
-    if (confirm(summary + "\nCONFIRM DATA UPLOAD?")) {
+    if (confirm("Commander! This needs your attention.\n\n" + summary + "\nCONFIRM DATA UPLOAD?")) {
       state.sp += companyIncome;
       saveState();
     }
@@ -1082,12 +1173,7 @@
     const cost = pv * 40;
     const lance = document.getElementById('buyLance').value;
 
-    if (state.sp < cost) {
-      alert(`INSUFFICIENT WARCHEST SP. COST IS ${cost} SP.`);
-      return;
-    }
-    
-    if (confirm(`Authorize the requisition of ${name} (PV: ${pv}) for ${cost} SP?`)) {
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize the requisition of ${name} (PV: ${pv}) for ${cost} SP?`)) {
       state.sp -= cost;
       const list = state[`unit${lance}`];
       list.push({
