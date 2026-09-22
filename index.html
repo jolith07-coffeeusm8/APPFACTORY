@@ -225,6 +225,7 @@
           <button onclick="switchTab('trainingTab')">Pilot Academy &amp; Skills</button>
           <button onclick="switchTab('upkeepTab')">Post-Sortie Upkeep</button>
           <button onclick="switchTab('marketTab')">Requisitions &amp; Dice</button>
+          <button onclick="switchTab('hotSpotsTab')">Hot Spots Campaign</button>
         </div>
       </div>
       <div style="flex-grow: 1;">
@@ -292,8 +293,9 @@
     <div class="grid">
       <!-- Mission Outcome -->
       <div class="card">
-        <h2>1. MISSION INCOME</h2>
+        <h2>1. MISSION LEDGER</h2>
         
+        <h3 style="margin-top:10px; margin-bottom:8px; font-size:1.05rem; color:var(--white-accent);">INCOME (SP)</h3>
         <div class="form-group">
           <label>Optional: Scale Payout (Win/Defeat)</label>
           <select id="scalePayoutPreset" onchange="applyScalePayout()">
@@ -310,14 +312,13 @@
         </div>
 
         <div class="form-group">
-          <label>Base Scenario Reward (SP)</label>
-          <input type="number" id="baseSP" value="0" min="0" oninput="resetScaleDropdown(); calcIncome();">
+          <label>Primary Objectives SP</label>
+          <input type="number" id="baseSP" value="0" oninput="resetScaleDropdown(); calcIncome();">
         </div>
 
         <div class="form-group">
-          <label>Bonus Objectives SP</label>
-          <input type="number" id="bonusSP" value="0" min="0" oninput="calcIncome()">
-          <small style="color:var(--text-muted); font-size:0.85rem; font-weight: 600; display:block; margin-top:4px;">* Note to players: On average, completing objectives will earn 150 SP.</small>
+          <label>Secondary Objectives SP</label>
+          <input type="number" id="bonusSP" value="0" oninput="calcIncome()">
         </div>
 
         <div class="form-group">
@@ -325,8 +326,18 @@
           <input type="number" id="destroyedEnemies" value="0" min="0" oninput="calcIncome()">
         </div>
         
-        <p style="font-family:'Russo One'; font-size:1.3rem; margin-top:10px;">
-          COMPANY EARNINGS: <span id="earnedSPTotal" style="color:#22c55e;">0</span> SP
+        <h3 style="margin-top:24px; margin-bottom:8px; font-size:1.05rem; color:var(--white-accent);">EXPENSES (SP)</h3>
+        <div class="form-group">
+          <label>Reconnaissance</label>
+          <input type="number" id="reconExpense" value="0" min="0" oninput="calcIncome()">
+        </div>
+        <div class="form-group">
+          <label>Waypoints</label>
+          <input type="number" id="waypointExpense" value="0" min="0" oninput="calcIncome()">
+        </div>
+
+        <p style="font-family:'Russo One'; font-size:1.3rem; margin-top:20px;">
+          NET EARNINGS: <span id="earnedSPTotal" style="color:#22c55e;">0</span> SP
         </p>
 
         <h3 style="margin-top:24px; margin-bottom:8px; font-size:1.05rem; color:var(--white-accent);">PILOT SP POOL DISTRIBUTION</h3>
@@ -445,6 +456,14 @@
           > SYSTEM STANDBY...
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- PANEL 5: HOT SPOTS CAMPAIGN (UNDER CONSTRUCTION) -->
+  <div id="hotSpotsTab" class="panel">
+    <div class="card" style="text-align:center; padding:40px;">
+      <h2 style="justify-content:center; border:none; margin-bottom:10px;">HOT SPOTS CAMPAIGN</h2>
+      <p style="color:var(--text-muted); font-size:1.1rem; font-style:italic;">Commander! This sector is currently under construction. Awaiting further tactical data.</p>
     </div>
   </div>
 </div>
@@ -607,7 +626,7 @@
   }
 
   function promptResetWarchest() {
-    const val = prompt("Enter new Company Warchest SP balance:", state.sp);
+    const val = prompt("Commander! This needs your attention.\n\nEnter new Company Warchest SP balance:", state.sp);
     if (val !== null) {
       state.sp = parseInt(val) || 0;
       saveState();
@@ -802,7 +821,7 @@
     for (let e = 2; e <= p.edgeMax; e++) if (EDGE_TOKEN_COSTS[e]) refund += EDGE_TOKEN_COSTS[e];
     for (let a = 1; a <= p.edgeAbilitiesCount; a++) if (EDGE_ABILITY_COSTS[a]) refund += EDGE_ABILITY_COSTS[a];
 
-    if(confirm(`Are you sure you want to wipe and reset ${p.pilot}'s stats back to baseline? (Skill 4, Edge 1, 0 SPA).\n\nNOTE: ${refund} SP previously spent on upgrades will be fully refunded into the central Company Warchest.`)) {
+    if(confirm(`Commander! This needs your attention.\n\nAre you sure you want to wipe and reset ${p.pilot}'s stats back to baseline? (Skill 4, Edge 1, 0 SPA).\n\nNOTE: ${refund} SP previously spent on upgrades will be fully refunded into the central Company Warchest.`)) {
       state.sp += refund;
       p.skill = 4;
       p.edgeMax = 1;
@@ -820,7 +839,7 @@
     const nextSkill = p.skill - 1;
     const cost = SKILL_COSTS[nextSkill];
     if (cost && p.spBank >= cost) {
-      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to increase Skill to ${nextSkill}?`)) {
+      if (confirm(`Commander! This needs your attention.\n\nSpend ${cost} SP from ${p.pilot}'s personal bank to increase Skill to ${nextSkill}?`)) {
         p.spBank -= cost;
         p.skill = nextSkill;
         saveState();
@@ -834,7 +853,7 @@
     const nextEdge = p.edgeMax + 1;
     const cost = EDGE_TOKEN_COSTS[nextEdge];
     if (cost && p.spBank >= cost) {
-      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to buy Edge Token #${nextEdge}?`)) {
+      if (confirm(`Commander! This needs your attention.\n\nSpend ${cost} SP from ${p.pilot}'s personal bank to buy Edge Token #${nextEdge}?`)) {
         p.spBank -= cost;
         p.edgeMax = nextEdge;
         p.edgeCurrent = nextEdge;
@@ -849,7 +868,7 @@
     const nextAbility = p.edgeAbilitiesCount + 1;
     const cost = EDGE_ABILITY_COSTS[nextAbility];
     if (cost && p.spBank >= cost) {
-      if (confirm(`Spend ${cost} SP from ${p.pilot}'s personal bank to purchase SPA slot #${nextAbility}?`)) {
+      if (confirm(`Commander! This needs your attention.\n\nSpend ${cost} SP from ${p.pilot}'s personal bank to purchase SPA slot #${nextAbility}?`)) {
         p.spBank -= cost;
         p.edgeAbilitiesCount = nextAbility;
         saveState();
@@ -877,7 +896,7 @@
   function addRosterUnit(lance, isNamed) {
     const totalNamed = [...state.unitA, ...state.unitB].filter(u => u.isNamed).length;
     if (isNamed && totalNamed >= 6) {
-      alert("COMMAND LIMIT ERROR: Maximum of 6 Named Pilots allowed across both units. Additional deployments must be Recruits.");
+      alert("Commander! This needs your attention.\n\nCOMMAND LIMIT ERROR: Maximum of 6 Named Pilots allowed across both units. Additional deployments must be Recruits.");
       return;
     }
 
@@ -904,7 +923,7 @@
   }
 
   function removeUnit(lance, idx) {
-    if (confirm("Are you sure you want to permanently delete this pilot and chassis from your roster?")) {
+    if (confirm("Commander! This needs your attention.\n\nAre you sure you want to permanently delete this pilot and chassis from your roster?")) {
       const list = lance === 'A' ? state.unitA : state.unitB;
       list.splice(idx, 1);
       saveState();
@@ -914,19 +933,16 @@
   function recruitNamedPilot() {
     const totalNamed = [...state.unitA, ...state.unitB].filter(u => u.isNamed).length;
     if (totalNamed >= 6) {
-      alert("COMMAND LIMIT ERROR: Maximum of 6 Named Pilots reached.");
+      alert("Commander! This needs your attention.\n\nCOMMAND LIMIT ERROR: Maximum of 6 Named Pilots reached.");
       return;
     }
-    if (state.sp < 150) {
-      alert("INSUFFICIENT FUNDS: Recruiting a new pilot costs 150 SP.");
-      return;
-    }
-
+    
+    // Warchest can now go negative for hiring
     const randomDefault = callsigns[Math.floor(Math.random() * callsigns.length)];
-    const name = prompt("Enter new Named Pilot's callsign:", randomDefault);
+    const name = prompt("Commander! This needs your attention.\n\nEnter new Named Pilot's callsign:", randomDefault);
     if (!name) return;
 
-    if (confirm(`Authorize deployment of ${name} to active duty for 150 SP?`)) {
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize deployment of ${name} to active duty for 150 SP?`)) {
       state.sp -= 150;
       state.unitA.push({
         id: "p_" + Date.now(),
@@ -971,11 +987,8 @@
 
   function executeSingleRepair() {
     const cost = calcSingleRepairCost();
-    if (state.sp < cost) {
-      alert(`INSUFFICIENT SP! Repair requires ${cost} SP.`);
-      return;
-    }
-    if (confirm(`Authorize field repairs for ${cost} SP?`)) {
+    // Allow negative Warchest
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize field repairs for ${cost} SP?`)) {
       state.sp -= cost;
       saveState();
       alert(`> LOGISTICS UPDATE: ${cost} SP deducted from company warchest.`);
@@ -985,15 +998,11 @@
   function openMedicalDialog() {
     const wounded = [...state.unitA, ...state.unitB].filter(u => u.status === 'Wounded');
     if (wounded.length === 0) {
-      alert("NO WOUNDED PILOTS FOUND IN SYSTEM.");
-      return;
-    }
-    if (state.sp < 100) {
-      alert("INSUFFICIENT SP! Medical recovery costs 100 SP per pilot.");
+      alert("Commander! This needs your attention.\n\nNO WOUNDED PILOTS FOUND IN SYSTEM.");
       return;
     }
     const names = wounded.map((w, i) => `${i + 1}. ${w.pilot}`).join('\n');
-    const choice = prompt(`SELECT PILOT FOR MEDICAL TREATMENT (100 SP):\n${names}\nEnter ID number:`);
+    const choice = prompt(`Commander! This needs your attention.\n\nSELECT PILOT FOR MEDICAL TREATMENT (100 SP):\n${names}\nEnter ID number:`);
     const idx = parseInt(choice) - 1;
     if (wounded[idx]) {
       state.sp -= 100;
@@ -1016,11 +1025,7 @@
 
   function executeOmniReconfig() {
     const cost = calcOmni();
-    if (state.sp < cost) {
-      alert(`INSUFFICIENT SP! Reconfiguration requires ${cost} SP.`);
-      return;
-    }
-    if (confirm(`Authorize OmniMech reconfiguration for ${cost} SP?`)) {
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize OmniMech reconfiguration for ${cost} SP?`)) {
       state.sp -= cost;
       saveState();
       alert(`> LOGISTICS UPDATE: OmniMech reconfigured. ${cost} SP deducted.`);
@@ -1041,11 +1046,22 @@
   }
 
   function calcIncome() {
-    const base = parseInt(document.getElementById('baseSP').value) || 0;
-    const bonus = parseInt(document.getElementById('bonusSP').value) || 0;
+    const primary = parseInt(document.getElementById('baseSP').value) || 0;
+    const secondary = parseInt(document.getElementById('bonusSP').value) || 0;
     const kills = (parseInt(document.getElementById('destroyedEnemies').value) || 0) * 5;
-    const total = base + bonus + kills;
-    document.getElementById('earnedSPTotal').textContent = total;
+    
+    const recon = parseInt(document.getElementById('reconExpense').value) || 0;
+    const waypoints = parseInt(document.getElementById('waypointExpense').value) || 0;
+
+    const total = (primary + secondary + kills) - (recon + waypoints);
+    
+    const earnedSpan = document.getElementById('earnedSPTotal');
+    earnedSpan.textContent = total;
+    if(total < 0) {
+        earnedSpan.style.color = "var(--red-hover)";
+    } else {
+        earnedSpan.style.color = "#22c55e";
+    }
     return total;
   }
 
@@ -1070,7 +1086,7 @@
     if (allNamed.length === 0) {
       state.sp += companyIncome;
       saveState();
-      alert(`> SORTIE CONCLUDED. +${companyIncome} SP DEPOSITED TO WARCHEST.`);
+      alert(`> SORTIE CONCLUDED. ${companyIncome >= 0 ? '+' : ''}${companyIncome} SP DEPOSITED TO WARCHEST.`);
       return;
     }
 
@@ -1081,7 +1097,7 @@
 
     const baseShare = Math.floor(pilotPool / totalWeights);
 
-    let summary = `> POST-SORTIE SETTLEMENT:\n- COMPANY EARNINGS: +${companyIncome} SP\n- PILOT DISTRIBUTION POOL: ${pilotPool} SP\n\nPILOT BANK DEPOSITS:\n`;
+    let summary = `> POST-SORTIE SETTLEMENT:\n- COMPANY NET EARNINGS: ${companyIncome >= 0 ? '+' : ''}${companyIncome} SP\n- PILOT DISTRIBUTION POOL: ${pilotPool} SP\n\nPILOT BANK DEPOSITS:\n`;
 
     allNamed.forEach(p => {
       let earned = Math.floor(baseShare * (p.participated ? 1.0 : 0.5));
@@ -1095,7 +1111,7 @@
       if (p.status === 'Sitting Out') p.status = 'OK';
     });
 
-    if (confirm(summary + "\nCONFIRM DATA UPLOAD?")) {
+    if (confirm("Commander! This needs your attention.\n\n" + summary + "\nCONFIRM DATA UPLOAD?")) {
       state.sp += companyIncome;
       saveState();
     }
@@ -1112,11 +1128,7 @@
     const cost = pv * 40;
     const lance = document.getElementById('buyLance').value;
 
-    if (state.sp < cost) {
-      alert(`INSUFFICIENT WARCHEST SP. COST IS ${cost} SP.`);
-      return;
-    }
-    if (confirm(`Authorize the requisition of ${name} (PV: ${pv}) for ${cost} SP?`)) {
+    if (confirm(`Commander! This needs your attention.\n\nAuthorize the requisition of ${name} (PV: ${pv}) for ${cost} SP?`)) {
       state.sp -= cost;
       const list = lance === 'A' ? state.unitA : state.unitB;
       list.push({
@@ -1165,4 +1177,5 @@
   window.onload = loadState;
 </script>
 </body>
+</html>
 </html>
